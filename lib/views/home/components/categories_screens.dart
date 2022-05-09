@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/controllers/newscontroller.dart';
+import 'package:newsapp/utilities/constants/urls.dart';
+import 'package:newsapp/utilities/functions/callback.dart';
+import 'package:newsapp/utilities/functions/print.dart';
+import 'package:newsapp/utilities/services/dio_services.dart';
+import 'package:newsapp/views/home/components/global_countries.dart';
+import 'package:provider/provider.dart';
 
-class Detailsglobal extends StatelessWidget {
+class Detailsglobal extends StatefulWidget {
   final String country;
   final String fullcountryname;
   const Detailsglobal(
       {Key? key, required this.country, required this.fullcountryname})
       : super(key: key);
+
+  @override
+  State<Detailsglobal> createState() => _DetailsglobalState();
+}
+
+class _DetailsglobalState extends State<Detailsglobal> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    callBack(() {
+      context.read<NewsController>().getCategoryData(
+          countryname: fullCountriesName, categoryName: CatLists[0].title);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -28,83 +51,91 @@ class Detailsglobal extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          fullcountryname,
+          widget.fullcountryname,
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SafeArea(
-        child: Column(
+      body: SafeArea(child:
+          Consumer<NewsController>(builder: ((context, newscontroller, child) {
+        return Column(
           children: [
             Expanded(
-                flex: 0,
-                child: SizedBox(
-                  height: size.height * 0.2,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: CatLists.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: PhysicalModel(
-                          color: Colors.cyan,
-                          elevation: 10,
-                          child: InkWell(
-                            onTap: () {
-                              // Get.dialog(Dialog(
-                              //   child: Container(
-                              //     height: 400,
-                              //     child:
-                              //         Center(child: CircularProgressIndicator()),
-                              //   ),
-                              // ));
+              flex: 0,
+              child: SizedBox(
+                height: size.height * 0.2,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: CatLists.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: PhysicalModel(
+                        color: Colors.cyan,
+                        elevation: 10,
+                        child: InkWell(
+                          onTap: () async {
+                            await newscontroller
+                                .getCategoryData(
+                                    categoryName: CatLists[index].title,
+                                    countryname: fullCountriesName)
+                                .then((value) {
+                              printer(value);
+                            });
+                            // Get.dialog(Dialog(
+                            //   child: Container(
+                            //     height: 400,
+                            //     child:
+                            //         Center(child: CircularProgressIndicator()),
+                            //   ),
+                            // ));
 
-                              // extrem
-                              //     .fetchdata2(
-                              //   country: country,
-                              //   category: "${CatLists[index].title}",
-                              // )
-                              //     .then((value) {
-                              //   print(value);
-                              //   ctx.category.value = value;
+                            // extrem
+                            //     .fetchdata2(
+                            //   country: country,
+                            //   category: "${CatLists[index].title}",
+                            // )
+                            //     .then((value) {
+                            //   print(value);
+                            //   ctx.category.value = value;
 
-                              //   Get.back();
-                              //   Get.to(
-                              //       categorypage(title: CatLists[index].title));
-                              // });
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.black)),
-                                    child: Image.network(
-                                      CatLists[index].imageurl,
-                                      fit: BoxFit.cover,
-                                      height: size.height * 0.13,
-                                      width: size.width * 0.35,
+                            //   Get.back();
+                            //   Get.to(
+                            //       categorypage(title: CatLists[index].title));
+                            // });
+                          },
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black)),
+                                  child: Image.network(
+                                    CatLists[index].imageurl,
+                                    fit: BoxFit.cover,
+                                    height: size.height * 0.13,
+                                    width: size.width * 0.35,
+                                  ),
+                                ),
+                                Center(
+                                  child: Text(
+                                    CatLists[index].title.toString(),
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                  Center(
-                                    child: Text(
-                                      CatLists[index].title.toString(),
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                )),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             Expanded(
               child: Container(
                 child: ListView.builder(
@@ -129,8 +160,8 @@ class Detailsglobal extends StatelessWidget {
               ),
             )
           ],
-        ),
-      ),
+        );
+      }))),
     );
   }
 }

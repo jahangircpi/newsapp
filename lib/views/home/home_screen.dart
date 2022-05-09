@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:newsapp/utilities/services/navigations.dart';
-import 'package:newsapp/utilities/services/print.dart';
+import 'package:newsapp/utilities/functions/navigations.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/home/components/categories_screens.dart';
 import 'package:newsapp/views/home/components/global_countries.dart';
+
+import '../../utilities/constants/urls.dart';
+import '../../utilities/services/dio_services.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -41,14 +44,19 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
                             onTap: () {
-                              printer("h");
-                              push(
-                                screen: Detailsglobal(
-                                  country: fullCountriesName[index].shortname!,
-                                  fullcountryname:
-                                      fullCountriesName[index].name!,
+                              
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Detailsglobal(
+                                    country:
+                                        fullCountriesName[index].shortname!,
+                                    fullcountryname:
+                                        fullCountriesName[index].name!,
+                                  ),
                                 ),
                               );
+
                               // apicalledglobal
                               //     .fetchdata3(
                               //   ct.coname[index].shortname,

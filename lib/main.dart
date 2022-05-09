@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/utilities/services/navigations.dart';
+import 'package:newsapp/controllers/newscontroller.dart';
+import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/views/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<NewsController>(create: (_) => NewsController())
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
