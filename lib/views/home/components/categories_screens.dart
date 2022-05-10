@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/newscontroller.dart';
-import 'package:newsapp/utilities/constants/urls.dart';
+import 'package:newsapp/utilities/constants/enums.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
-import 'package:newsapp/utilities/functions/print.dart';
-import 'package:newsapp/utilities/services/dio_services.dart';
-import 'package:newsapp/views/home/components/global_countries.dart';
 import 'package:provider/provider.dart';
 
 class Detailsglobal extends StatefulWidget {
-  final String country;
-  final String fullcountryname;
+  final String? country;
+  final String? fullcountryname;
   const Detailsglobal(
       {Key? key, required this.country, required this.fullcountryname})
       : super(key: key);
@@ -21,11 +18,10 @@ class Detailsglobal extends StatefulWidget {
 class _DetailsglobalState extends State<Detailsglobal> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     callBack(() {
       context.read<NewsController>().getCategoryData(
-          countryname: fullCountriesName, categoryName: CatLists[0].title);
+          countryname: widget.country, categoryName: "business");
     });
   }
 
@@ -51,8 +47,8 @@ class _DetailsglobalState extends State<Detailsglobal> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.fullcountryname,
-          style: TextStyle(color: Colors.black),
+          widget.fullcountryname!,
+          style: const TextStyle(color: Colors.black),
         ),
       ),
       body: SafeArea(child:
@@ -66,7 +62,7 @@ class _DetailsglobalState extends State<Detailsglobal> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: CatLists.length,
+                  itemCount: catLists.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -75,13 +71,9 @@ class _DetailsglobalState extends State<Detailsglobal> {
                         elevation: 10,
                         child: InkWell(
                           onTap: () async {
-                            await newscontroller
-                                .getCategoryData(
-                                    categoryName: CatLists[index].title,
-                                    countryname: fullCountriesName)
-                                .then((value) {
-                              printer(value);
-                            });
+                            await newscontroller.getCategoryData(
+                                countryname: 'au',
+                                categoryName: catLists[index].title);
                             // Get.dialog(Dialog(
                             //   child: Container(
                             //     height: 400,
@@ -104,30 +96,28 @@ class _DetailsglobalState extends State<Detailsglobal> {
                             //       categorypage(title: CatLists[index].title));
                             // });
                           },
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black)),
-                                  child: Image.network(
-                                    CatLists[index].imageurl,
-                                    fit: BoxFit.cover,
-                                    height: size.height * 0.13,
-                                    width: size.width * 0.35,
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black)),
+                                child: Image.network(
+                                  catLists[index].imageurl!,
+                                  fit: BoxFit.cover,
+                                  height: size.height * 0.13,
+                                  width: size.width * 0.35,
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  catLists[index].title.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                Center(
-                                  child: Text(
-                                    CatLists[index].title.toString(),
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -137,26 +127,23 @@ class _DetailsglobalState extends State<Detailsglobal> {
               ),
             ),
             Expanded(
-              child: Container(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return container();
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemCount: newscontroller.categoriesLists.articles!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var lists = newscontroller.categoriesLists.articles![index];
 
-                    // container(
-                    //     detailsurl: ctx.countries.value.articles[index].url,
-                    //     imageurl:
-                    //         ctx.countries.value.articles[index].urlToImage,
-                    //     title: ctx.countries.value.articles[index].title,
-                    //     description:
-                    //         ctx.countries.value.articles[index].description,
-                    //     height: size.height * 0.24,
-                    //     source: ctx.countries.value.articles[index].source.name
-                    //         .toString());
-                  },
-                ),
+                  return newscontroller.categoryDataState == DataState.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : container(
+                          detailsurl: lists.url,
+                          imageurl: lists.urlToImage,
+                          title: lists.title,
+                          description: lists.description,
+                          height: size.height * 0.24,
+                          source: lists.source!.name!.toString());
+                },
               ),
             )
           ],
@@ -166,75 +153,69 @@ class _DetailsglobalState extends State<Detailsglobal> {
   }
 }
 
-Widget container() {
+Widget container({imageurl, title, description, height, detailsurl, source}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: InkWell(
-      onTap: () {
-        // Get.to(detailspage(
-        //   detailsurl: detailsurl,
-        //   source: source,
-        // ));
-      },
-      child: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(9),
-                child: Image.network(
-                  "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png",
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
+      onTap: () {},
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(9),
+              child: Image.network(
+                imageurl ??
+                    "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png",
+                width: double.infinity,
+                height: height,
+                fit: BoxFit.cover,
               ),
             ),
-            Text(
-              "Title will be displayed here",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text("Description will be displayed here"),
-          ],
-        ),
+          ),
+          Text(
+            title ?? "Title will be displayed here",
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          Text(description ?? "Description will be displayed here"),
+        ],
       ),
     ),
   );
 }
 
-class categorylist {
-  var title;
-  var imageurl;
-  categorylist({this.title, this.imageurl});
+class Categorylist {
+  String? title;
+  String? imageurl;
+  Categorylist({this.title, this.imageurl});
 }
 
-List<categorylist> CatLists = [
-  categorylist(
+List<Categorylist> catLists = [
+  Categorylist(
       title: "business",
       imageurl:
           "https://img.freepik.com/free-photo/business-brainstorming-graph-chart-report-data-concept_53876-31213.jpg?size=626&ext=jpg"),
-  categorylist(
+  Categorylist(
       title: "entertainment",
       imageurl:
           "https://images.unsplash.com/photo-1601407422822-a53f7f7a09c4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  categorylist(
+  Categorylist(
       title: "general",
       imageurl:
           "https://images.unsplash.com/photo-1503497928123-ae945f95fd2f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  categorylist(
+  Categorylist(
       title: "health",
       imageurl:
           "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  categorylist(
+  Categorylist(
       title: "science",
       imageurl:
           "https://images.unsplash.com/photo-1517976487492-5750f3195933?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  categorylist(
+  Categorylist(
       title: "sports",
       imageurl:
           "https://images.unsplash.com/photo-1612811549877-c45e76353a7d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"),
-  categorylist(
+  Categorylist(
       title: "technology",
       imageurl:
           "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80")

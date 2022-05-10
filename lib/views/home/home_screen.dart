@@ -1,15 +1,24 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/utilities/functions/print.dart';
+import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/views/home/components/categories_screens.dart';
 import 'package:newsapp/views/home/components/global_countries.dart';
 
-import '../../utilities/constants/urls.dart';
-import '../../utilities/services/dio_services.dart';
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Dio dio = Dio();
+  @override
+  void initState() {
+    super.initState();
+    callBack(() async {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -20,90 +29,86 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.cyan.withOpacity(0.9),
         appBar: AppBar(
           centerTitle: true,
-          title: Text("News"),
+          title: const Text("News"),
           elevation: 10,
           backgroundColor: Colors.cyan.withOpacity(0.60),
         ),
         body: SafeArea(
-          child: Container(
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 0,
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0), child: search()),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: fullCountriesName.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 0,
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0), child: search()),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: fullCountriesName.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Detailsglobal(
-                                    country:
-                                        fullCountriesName[index].shortname!,
-                                    fullcountryname:
-                                        fullCountriesName[index].name!,
-                                  ),
-                                ),
-                              );
-
-                              // apicalledglobal
-                              //     .fetchdata3(
-                              //   ct.coname[index].shortname,
-                              // )
-                              //     .then((value) {
-                              //   ct.countries.value = value;
-                              //   Get.back();
-                              //   Get.to(detailsglobal(
-                              //     country: countriesname[index].name,
-                              //     fullcountryname:
-                              //         FullCountriesName[index].name,
-                              //   ));
-                              // });
-                            },
-                            child: PhysicalModel(
-                              color: Colors.cyan.withOpacity(0.9),
-                              shadowColor: Colors.white.withOpacity(0.40),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(80)),
-                              elevation: 30,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(80)),
-                                  color: Colors.white,
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(28.0),
-                                    child: Text(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Detailsglobal(
+                                  country: fullCountriesName[index].shortname!,
+                                  fullcountryname:
                                       fullCountriesName[index].name!,
-                                      style: const TextStyle(
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                ),
+                              ),
+                            );
+
+                            // apicalledglobal
+                            //     .fetchdata3(
+                            //   ct.coname[index].shortname,
+                            // )
+                            //     .then((value) {
+                            //   ct.countries.value = value;
+                            //   Get.back();
+                            //   Get.to(detailsglobal(
+                            //     country: countriesname[index].name,
+                            //     fullcountryname:
+                            //         FullCountriesName[index].name,
+                            //   ));
+                            // });
+                          },
+                          child: PhysicalModel(
+                            color: Colors.cyan.withOpacity(0.9),
+                            shadowColor: Colors.white.withOpacity(0.40),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(80)),
+                            elevation: 30,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(80)),
+                                color: Colors.white,
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(28.0),
+                                  child: Text(
+                                    fullCountriesName[index].name!,
+                                    style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

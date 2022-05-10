@@ -11,16 +11,16 @@ class DioSingleton {
   static DioSingleton get instance => _singleton;
 
   var dio = Dio();
-  void update(token) {
-    BaseOptions options = BaseOptions(
-      baseUrl: Urls.baseUrl,
-      headers: {'Authorization': 'Bearer ' '$token'},
-      connectTimeout: 180000,
-      receiveTimeout: 180000,
-    );
+  // void update(token) {
+  //   BaseOptions options = BaseOptions(
+  //     baseUrl: Urls.baseUrl,
+  //     headers: {'Authorization': 'Bearer ' '$token'},
+  //     connectTimeout: 180000,
+  //     receiveTimeout: 180000,
+  //   );
 
-    dio = Dio(options);
-  }
+  //   dio = Dio(options);
+  // }
 
   void create() {
     BaseOptions options = BaseOptions(
