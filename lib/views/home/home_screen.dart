@@ -1,8 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:newsapp/controllers/home_controller.dart';
+import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/constants/enums.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
-import 'package:newsapp/views/home/components/categories_screens.dart';
-import 'package:newsapp/views/home/components/global_countries.dart';
+import 'package:newsapp/utilities/functions/gap.dart';
+import 'package:newsapp/utilities/widgets/netimagecalling.dart';
+import 'package:newsapp/views/home/components/allpopularnewswebsite.dart';
+import 'package:provider/provider.dart';
+import 'package:ud_design/ud_design.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,144 +17,227 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Dio dio = Dio();
   @override
   void initState() {
     super.initState();
-    callBack(() async {});
+    callBack(() {
+      var newList = popularwebsiteLists
+          .map((e) => e.title!)
+          .toList()
+          .toString()
+          .replaceAll('[', '')
+          .replaceAll(']', '')
+          .replaceAll(' ', '')
+          .trim();
+      context.read<HomeController>().getHomeData(newswebsite: newList);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
-        backgroundColor: Colors.cyan.withOpacity(0.9),
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("News"),
-          elevation: 10,
-          backgroundColor: Colors.cyan.withOpacity(0.60),
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                flex: 0,
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0), child: search()),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: fullCountriesName.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Detailsglobal(
-                                  country: fullCountriesName[index].shortname!,
-                                  fullcountryname:
-                                      fullCountriesName[index].name!,
-                                ),
+    return Scaffold(
+      backgroundColor: Colors.cyan.withOpacity(0.2),
+      body: SafeArea(
+        child: Consumer<HomeController>(
+          builder: (context, homecontroller, child) {
+            return Column(
+              children: [
+                Container(
+                  height: UdDesign.pt(100),
+                  color: PColors.backgrounColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: UdDesign.pt(50),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: popularwebsiteLists.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: UdDesign.pt(4),
                               ),
-                            );
-
-                            // apicalledglobal
-                            //     .fetchdata3(
-                            //   ct.coname[index].shortname,
-                            // )
-                            //     .then((value) {
-                            //   ct.countries.value = value;
-                            //   Get.back();
-                            //   Get.to(detailsglobal(
-                            //     country: countriesname[index].name,
-                            //     fullcountryname:
-                            //         FullCountriesName[index].name,
-                            //   ));
-                            // });
-                          },
-                          child: PhysicalModel(
-                            color: Colors.cyan.withOpacity(0.9),
-                            shadowColor: Colors.white.withOpacity(0.40),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(80)),
-                            elevation: 30,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(80)),
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(28.0),
-                                  child: Text(
-                                    fullCountriesName[index].name!,
-                                    style: const TextStyle(
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.bold),
+                              child: GestureDetector(
+                                onTap: () {
+                                  homecontroller.getPopularItemIndex(
+                                      indexGiven: index);
+                                  if (popularwebsiteLists[index].title ==
+                                      'All') {
+                                    var newList = popularwebsiteLists
+                                        .map((e) => e.title!)
+                                        .toList()
+                                        .toString()
+                                        .replaceAll('[', '')
+                                        .replaceAll(']', '')
+                                        .replaceAll(' ', '')
+                                        .trim();
+                                    context
+                                        .read<HomeController>()
+                                        .getHomeData(newswebsite: newList);
+                                  } else {
+                                    homecontroller.getHomeData(
+                                        newswebsite:
+                                            popularwebsiteLists[index].title!);
+                                  }
+                                },
+                                child: Container(
+                                  // color: PColors.basicColor,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color:
+                                        homecontroller.popularItemIndex == index
+                                            ? PColors.basicColor
+                                            : Colors.white10,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: UdDesign.pt(8),
+                                      horizontal: UdDesign.pt(20),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        popularwebsiteLists[index].webSite!,
+                                        style: TextStyle(
+                                            fontSize: UdDesign.fontSize(15),
+                                            color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: UdDesign.pt(8),
+                    ),
+                    child: homecontroller.categoryDataState ==
+                                DataState.loading ||
+                            homecontroller.categoryDataState ==
+                                DataState.initial
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: PColors.containerColor,
+                              color: PColors.sliverColor,
+                            ),
+                          )
+                        : homecontroller.categoryDataState == DataState.error
+                            ? const Center(
+                                child: Text(
+                                  "There is a Problem!",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: homecontroller
+                                    .homedataLists.articles!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var lists = homecontroller
+                                      .homedataLists.articles![index];
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: UdDesign.pt(4)),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: PColors.containerColor,
+                                          borderRadius: BorderRadius.circular(
+                                            UdDesign.pt(10),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 0,
+                                              child: SizedBox(
+                                                width: UdDesign.pt(100),
+                                                height: UdDesign.pt(100),
+                                                child: networkImagescall(
+                                                    src: lists.urlToImage ??
+                                                        "https://firebasestorage.googleapis.com/v0/b/portfolio-8523e.appspot.com/o/loading.png?alt=media&token=894ae105-847f-48e5-af95-7467dafa74e2"),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 0,
+                                              child: gapX(5),
+                                            ),
+                                            Expanded(
+                                              child: SizedBox(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    gapY(5),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          color: Colors.red,
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                              horizontal:
+                                                                  UdDesign.pt(
+                                                                      8),
+                                                              vertical:
+                                                                  UdDesign.pt(
+                                                                      8),
+                                                            ),
+                                                            child: Text(
+                                                              lists.source!
+                                                                      .name ??
+                                                                  "Source",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const Text("3:40 PM")
+                                                      ],
+                                                    ),
+                                                    gapY(5),
+                                                    Text(
+                                                      lists.title ??
+                                                          "got error to load",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              UdDesign.fontSize(
+                                                                  18),
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
-    );
-  }
-
-  search() {
-    return TextField(
-      // controller: textEditingController,
-      decoration: const InputDecoration(
-          prefixIcon: Icon(
-            Icons.search,
-            color: Colors.white,
-          ),
-          contentPadding: EdgeInsets.only(left: 100),
-          border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(18.0)),
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(18.0)),
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(18.0)),
-              borderSide: BorderSide(color: Colors.red),
-              gapPadding: 100),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(18.0),
-            ),
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          hintText: "Search country",
-          hintStyle: TextStyle(color: Colors.white, fontSize: 25)),
-      onChanged: (v) {
-        // ct.coname.value = ct.searchlist
-        //     .where((e) => e.name.toLowerCase().contains(v.toLowerCase()))
-        //     .toList();
-      },
     );
   }
 }
