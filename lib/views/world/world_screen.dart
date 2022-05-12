@@ -4,8 +4,8 @@ import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/constants/themes.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/print.dart';
-import 'package:newsapp/views/world/components/categories_screens.dart';
-import 'package:newsapp/views/world/components/global_countries.dart';
+import 'package:newsapp/views/world/details_categories_screens.dart';
+import 'package:newsapp/models/global_countries.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../utilities/functions/gap.dart';
 

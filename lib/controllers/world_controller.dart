@@ -8,7 +8,7 @@ import '../utilities/services/dio_services.dart';
 
 class WorldController extends ChangeNotifier {
   HomePageNewsModel worldnewsLists = HomePageNewsModel();
-  DataState categoryDataState = DataState.initial;
+  DataState worldDataState = DataState.initial;
 
   int? categoryIndex = 0;
   getCategoryIndex({givenIndex}) {
@@ -17,18 +17,17 @@ class WorldController extends ChangeNotifier {
   }
 
   getCategoryData({countryname, categoryName}) async {
-    categoryDataState = DataState.loading;
+    worldDataState = DataState.loading;
     try {
       Response categorydata = await getHttp(
         path: Urls.categoryData(category: categoryName, country: countryname),
       );
       if (categorydata.statusCode == 200) {
-        categoryDataState = DataState.loaded;
         worldnewsLists = HomePageNewsModel.fromJson(categorydata.data);
-        categoryDataState = DataState.loaded;
+        worldDataState = DataState.loaded;
       }
     } catch (e) {
-      categoryDataState = DataState.error;
+      worldDataState = DataState.error;
       printer(e);
     }
     notifyListeners();
@@ -36,18 +35,18 @@ class WorldController extends ChangeNotifier {
 }
 
 // getCategoryData({countryname, categoryName}) async {
-//   categoryDataState = DataState.loading;
+//   worldDataState = DataState.loading;
 //   try {
 //     Response categorydata = await getHttp(
 //       path: Urls.categoryData(category: categoryName, country: countryname),
 //     );
 //     if (categorydata.statusCode == 200) {
 //       categoriesLists = Category.fromJson(categorydata.data);
-//       categoryDataState = DataState.loaded;
+//       worldDataState = DataState.loaded;
 //       printer(categoriesLists.articles);
 //     }
 //   } catch (e) {
-//     categoryDataState = DataState.error;
+//     worldDataState = DataState.error;
 //     printer(e);
 //   }
 //   notifyListeners();

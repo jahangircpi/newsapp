@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
+import 'package:newsapp/views/world/components/category_lists.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
-import '../../../utilities/constants/colors.dart';
-import '../../../utilities/widgets/contianer_white.dart';
+import '../../utilities/constants/colors.dart';
+import '../../utilities/widgets/contianer_white.dart';
 
 class Detailsglobal extends StatefulWidget {
   final String? country;
@@ -30,7 +31,6 @@ class _DetailsglobalState extends State<Detailsglobal> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -116,7 +116,8 @@ class _DetailsglobalState extends State<Detailsglobal> {
                 ),
                 Expanded(
                   child: containerwhite(
-                      worldcontroller: worldcontroller,
+                      dataStateEnum: worldcontroller.worldDataState,
+                      controller: worldcontroller,
                       listName: worldcontroller.worldnewsLists),
                 ),
               ],
@@ -126,72 +127,4 @@ class _DetailsglobalState extends State<Detailsglobal> {
       ),
     );
   }
-
-  Widget container({imageurl, title, description, height, detailsurl, source}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {},
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(9),
-                child: Image.network(
-                  imageurl ??
-                      "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png",
-                  width: double.infinity,
-                  height: height,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Text(
-              title ?? "Title will be displayed here",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(description ?? "Description will be displayed here"),
-          ],
-        ),
-      ),
-    );
-  }
 }
-
-class Categorylist {
-  String? title;
-  String? imageurl;
-  Categorylist({this.title, this.imageurl});
-}
-
-List<Categorylist> catLists = [
-  Categorylist(
-      title: "business",
-      imageurl:
-          "https://img.freepik.com/free-photo/business-brainstorming-graph-chart-report-data-concept_53876-31213.jpg?size=626&ext=jpg"),
-  Categorylist(
-      title: "entertainment",
-      imageurl:
-          "https://images.unsplash.com/photo-1601407422822-a53f7f7a09c4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  Categorylist(
-      title: "general",
-      imageurl:
-          "https://images.unsplash.com/photo-1503497928123-ae945f95fd2f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  Categorylist(
-      title: "health",
-      imageurl:
-          "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  Categorylist(
-      title: "science",
-      imageurl:
-          "https://images.unsplash.com/photo-1517976487492-5750f3195933?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
-  Categorylist(
-      title: "sports",
-      imageurl:
-          "https://images.unsplash.com/photo-1612811549877-c45e76353a7d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"),
-  Categorylist(
-      title: "technology",
-      imageurl:
-          "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80")
-];

@@ -6,21 +6,26 @@ import '../constants/enums.dart';
 import '../functions/gap.dart';
 import 'netimagecalling.dart';
 
-containerwhite({worldcontroller, listName}) {
+containerwhite({required dataStateEnum, controller, listName}) {
   return Padding(
     padding: EdgeInsets.symmetric(
       horizontal: UdDesign.pt(8),
     ),
-    child: worldcontroller.categoryDataState == DataState.loading
+    child: dataStateEnum == DataState.initial
         ? const Center(
             child: CircularProgressIndicator(
               backgroundColor: PColors.containerColor,
               color: PColors.sliverColor,
             ),
           )
-        : worldcontroller.categoryDataState == DataState.initial
-            ? const SizedBox()
-            : worldcontroller.categoryDataState == DataState.error
+        : dataStateEnum == DataState.loading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: PColors.containerColor,
+                  color: PColors.sliverColor,
+                ),
+              )
+            : dataStateEnum == DataState.error
                 ? const Center(
                     child: Text(
                       "There is a Problem!",

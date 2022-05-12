@@ -8,7 +8,7 @@ import '../utilities/services/dio_services.dart';
 
 class HomeController extends ChangeNotifier {
   HomePageNewsModel homedataLists = HomePageNewsModel();
-  DataState categoryDataState = DataState.initial;
+  DataState homeDataState = DataState.initial;
 
   int? popularItemIndex = 0;
   getPopularItemIndex({indexGiven}) {
@@ -17,18 +17,17 @@ class HomeController extends ChangeNotifier {
   }
 
   getHomeData({required newswebsite}) async {
-    categoryDataState = DataState.loading;
+    homeDataState = DataState.loading;
     try {
-      Response categorydata = await getHttp(
+      Response data = await getHttp(
         path: Urls.homeapi(website: newswebsite),
       );
-      if (categorydata.statusCode == 200) {
-        categoryDataState = DataState.loaded;
-        homedataLists = HomePageNewsModel.fromJson(categorydata.data);
-        categoryDataState = DataState.loaded;
+      if (data.statusCode == 200) {
+        homedataLists = HomePageNewsModel.fromJson(data.data);
+        homeDataState = DataState.loaded;
       }
     } catch (e) {
-      categoryDataState = DataState.error;
+      homeDataState = DataState.error;
       printer(e);
     }
     notifyListeners();

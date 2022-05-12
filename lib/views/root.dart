@@ -139,7 +139,8 @@ class _RootScreenState extends State<RootScreen> {
         : Image.asset(
             icon,
             color: _currentIndex == currentIndex ? Colors.white : Colors.black,
-            height: UdDesign.pt(25),
+            height: UdDesign.pt(22),
+            fit: BoxFit.cover,
           );
   }
 }

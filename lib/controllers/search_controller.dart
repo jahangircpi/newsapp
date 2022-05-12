@@ -8,21 +8,27 @@ import '../utilities/services/dio_services.dart';
 
 class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
-  DataState categoryDataState = DataState.initial;
+  DataState searchDataState = DataState.initial;
+
+  int homeImageIndex = 0;
+
+  getHomeIndex({givenIndex}) {
+    homeImageIndex = givenIndex;
+    notifyListeners();
+  }
 
   getSearchData({required searchTexts}) async {
-    categoryDataState = DataState.loading;
+    searchDataState = DataState.loading;
     try {
       Response categorydata = await getHttp(
         path: Urls.search(searchText: searchTexts),
       );
       if (categorydata.statusCode == 200) {
-        categoryDataState = DataState.loaded;
         searchDataLists = HomePageNewsModel.fromJson(categorydata.data);
-        categoryDataState = DataState.loaded;
+        searchDataState = DataState.loaded;
       }
     } catch (e) {
-      categoryDataState = DataState.error;
+      searchDataState = DataState.error;
       printer(e);
     }
     notifyListeners();

@@ -5,5 +5,5 @@ class Urls {
   static String homeapi({website}) =>
       "$baseUrl/everything?domains=$website&language=en&apiKey=0aacbc697a864022adbf7c160ca39a02";
   static String search({searchText}) =>
-      "$baseUrl${"/everything?q=$searchText&apiKey=0aacbc697a864022adbf7c160ca39a02"}";
+      "$baseUrl${"/everything?q=$searchText&sortBy=relevancy&apiKey=0aacbc697a864022adbf7c160ca39a02"}";
 }
