@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/controllers/newscontroller.dart';
-import 'package:newsapp/utilities/constants/enums.dart';
+import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:provider/provider.dart';
+import 'package:ud_design/ud_design.dart';
+
+import '../../../utilities/constants/colors.dart';
+import '../../../utilities/widgets/contianer_white.dart';
 
 class Detailsglobal extends StatefulWidget {
   final String? country;
@@ -20,14 +23,13 @@ class _DetailsglobalState extends State<Detailsglobal> {
   void initState() {
     super.initState();
     callBack(() {
-      context.read<NewsController>().getCategoryData(
+      context.read<WorldController>().getCategoryData(
           countryname: widget.country, categoryName: "business");
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +40,7 @@ class _DetailsglobalState extends State<Detailsglobal> {
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();
             }
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -51,137 +54,109 @@ class _DetailsglobalState extends State<Detailsglobal> {
           style: const TextStyle(color: Colors.black),
         ),
       ),
-      body: SafeArea(child:
-          Consumer<NewsController>(builder: ((context, newscontroller, child) {
-        return Column(
-          children: [
-            Expanded(
-              flex: 0,
-              child: SizedBox(
-                height: size.height * 0.2,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: catLists.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: PhysicalModel(
-                        color: Colors.cyan,
-                        elevation: 10,
-                        child: InkWell(
-                          onTap: () async {
-                            await newscontroller.getCategoryData(
-                                countryname: 'au',
-                                categoryName: catLists[index].title);
-                            // Get.dialog(Dialog(
-                            //   child: Container(
-                            //     height: 400,
-                            //     child:
-                            //         Center(child: CircularProgressIndicator()),
-                            //   ),
-                            // ));
-
-                            // extrem
-                            //     .fetchdata2(
-                            //   country: country,
-                            //   category: "${CatLists[index].title}",
-                            // )
-                            //     .then((value) {
-                            //   print(value);
-                            //   ctx.category.value = value;
-
-                            //   Get.back();
-                            //   Get.to(
-                            //       categorypage(title: CatLists[index].title));
-                            // });
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black)),
-                                child: Image.network(
-                                  catLists[index].imageurl!,
-                                  fit: BoxFit.cover,
-                                  height: size.height * 0.13,
-                                  width: size.width * 0.35,
-                                ),
+      body: SafeArea(
+        child: Consumer<WorldController>(
+          builder: ((context, worldcontroller, child) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: UdDesign.pt(100),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: UdDesign.pt(50),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: catLists.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: UdDesign.pt(4),
                               ),
-                              Center(
-                                child: Text(
-                                  catLists[index].title.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.white,
+                              child: GestureDetector(
+                                onTap: () {
+                                  worldcontroller.getCategoryIndex(
+                                      givenIndex: index);
+                                  worldcontroller.getCategoryData(
+                                      categoryName: catLists[index].title,
+                                      countryname: widget.country);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color:
+                                        worldcontroller.categoryIndex == index
+                                            ? PColors.basicColor
+                                            : Colors.white10,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: UdDesign.pt(8),
+                                      horizontal: UdDesign.pt(20),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        catLists[index].title!,
+                                        style: TextStyle(
+                                            fontSize: UdDesign.fontSize(15),
+                                            color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: containerwhite(
+                      worldcontroller: worldcontroller,
+                      listName: worldcontroller.worldnewsLists),
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget container({imageurl, title, description, height, detailsurl, source}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {},
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(9),
+                child: Image.network(
+                  imageurl ??
+                      "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png",
+                  width: double.infinity,
+                  height: height,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemCount: newscontroller.categoriesLists.articles!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var lists = newscontroller.categoriesLists.articles![index];
-
-                  return newscontroller.categoryDataState == DataState.loading
-                      ? const Center(child: CircularProgressIndicator())
-                      : container(
-                          detailsurl: lists.url,
-                          imageurl: lists.urlToImage,
-                          title: lists.title,
-                          description: lists.description,
-                          height: size.height * 0.24,
-                          source: lists.source!.name!.toString());
-                },
-              ),
-            )
+            Text(
+              title ?? "Title will be displayed here",
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(description ?? "Description will be displayed here"),
           ],
-        );
-      }))),
+        ),
+      ),
     );
   }
-}
-
-Widget container({imageurl, title, description, height, detailsurl, source}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: InkWell(
-      onTap: () {},
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(9),
-              child: Image.network(
-                imageurl ??
-                    "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png",
-                width: double.infinity,
-                height: height,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Text(
-            title ?? "Title will be displayed here",
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          Text(description ?? "Description will be displayed here"),
-        ],
-      ),
-    ),
-  );
 }
 
 class Categorylist {

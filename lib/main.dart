@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/newscontroller.dart';
+import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/views/root.dart';
@@ -13,6 +14,9 @@ void main() {
     ),
     ChangeNotifierProvider<HomeController>(
       create: (_) => HomeController(),
+    ),
+    ChangeNotifierProvider<WorldController>(
+      create: (_) => WorldController(),
     ),
   ], child: const MyApp()));
 }

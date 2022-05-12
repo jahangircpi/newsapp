@@ -4,7 +4,7 @@ import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/views/search/search_screen.dart';
 import 'package:ud_design/ud_design.dart';
 import 'home/home_screen.dart';
-import 'world/home_screen.dart';
+import 'world/world_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   getBody(current) {
     switch (current) {
@@ -30,7 +30,7 @@ class _RootScreenState extends State<RootScreen> {
 
       case 2:
         {
-          return SearchScreen();
+          return const SearchScreen();
         }
     }
   }
@@ -76,7 +76,7 @@ class _RootScreenState extends State<RootScreen> {
               BottomNavigationBarItem(
                   icon: iconwithdesignmethod(
                       icon: Passets.searchIcon,
-                      titleText: "Cart",
+                      titleText: "Search",
                       currentIndex: 2),
                   label: ''),
             ],

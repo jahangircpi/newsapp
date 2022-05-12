@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
-import 'package:newsapp/utilities/constants/enums.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
-import 'package:newsapp/utilities/functions/gap.dart';
-import 'package:newsapp/utilities/widgets/netimagecalling.dart';
 import 'package:newsapp/views/home/components/allpopularnewswebsite.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+
+import '../../utilities/widgets/contianer_white.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,15 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan.withOpacity(0.2),
       body: SafeArea(
         child: Consumer<HomeController>(
           builder: (context, homecontroller, child) {
             return Column(
               children: [
-                Container(
+                SizedBox(
                   height: UdDesign.pt(100),
-                  color: PColors.backgrounColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -115,123 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: UdDesign.pt(8),
-                    ),
-                    child: homecontroller.categoryDataState ==
-                                DataState.loading ||
-                            homecontroller.categoryDataState ==
-                                DataState.initial
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: PColors.containerColor,
-                              color: PColors.sliverColor,
-                            ),
-                          )
-                        : homecontroller.categoryDataState == DataState.error
-                            ? const Center(
-                                child: Text(
-                                  "There is a Problem!",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: homecontroller
-                                    .homedataLists.articles!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  var lists = homecontroller
-                                      .homedataLists.articles![index];
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: UdDesign.pt(4)),
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: PColors.containerColor,
-                                          borderRadius: BorderRadius.circular(
-                                            UdDesign.pt(10),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 0,
-                                              child: SizedBox(
-                                                width: UdDesign.pt(100),
-                                                height: UdDesign.pt(100),
-                                                child: networkImagescall(
-                                                    src: lists.urlToImage ??
-                                                        "https://firebasestorage.googleapis.com/v0/b/portfolio-8523e.appspot.com/o/loading.png?alt=media&token=894ae105-847f-48e5-af95-7467dafa74e2"),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 0,
-                                              child: gapX(5),
-                                            ),
-                                            Expanded(
-                                              child: SizedBox(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    gapY(5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Container(
-                                                          color: Colors.red,
-                                                          child: Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              horizontal:
-                                                                  UdDesign.pt(
-                                                                      8),
-                                                              vertical:
-                                                                  UdDesign.pt(
-                                                                      8),
-                                                            ),
-                                                            child: Text(
-                                                              lists.source!
-                                                                      .name ??
-                                                                  "Source",
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const Text("3:40 PM")
-                                                      ],
-                                                    ),
-                                                    gapY(5),
-                                                    Text(
-                                                      lists.title ??
-                                                          "got error to load",
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              UdDesign.fontSize(
-                                                                  18),
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                  ),
+                  child: containerwhite(
+                      worldcontroller: homecontroller,
+                      listName: homecontroller.homedataLists),
                 ),
               ],
             );
