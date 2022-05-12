@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:provider/provider.dart';
+import 'package:ud_design/ud_design.dart';
 import '../../utilities/constants/themes.dart';
 import '../../utilities/functions/gap.dart';
 import '../../utilities/widgets/contianer_white.dart';
@@ -55,31 +55,26 @@ class SearchScreen extends StatelessWidget {
                       flex: 0,
                       child: InkWell(
                         onTap: () async {
-                          printer(controllerForSearcing.text);
-                          searchcontroller.getSearchData(
-                              searchTexts: controllerForSearcing.text);
-                          // if (controllerForSearcing.text.isNotEmpty) {
-                          //   await searchcontroller.getSearchData(
-                          //       searchTexts: controllerForSearcing.text);
-                          //   printer(searchcontroller.searchDataState);
-                          // } else {
-                          //   printer('hello');
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     SnackBar(
-                          //       content: Padding(
-                          //         padding: EdgeInsets.symmetric(
-                          //           horizontal: UdDesign.pt(100),
-                          //         ),
-                          //         child: const Text('Search box is empty'),
-                          //       ),
-                          //       behavior: SnackBarBehavior.floating,
-                          //       backgroundColor: Colors.red,
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(24),
-                          //       ),
-                          //     ),
-                          //   );
-                          // }
+                          if (controllerForSearcing.text.isNotEmpty) {
+                            await searchcontroller.getSearchData(
+                                searchTexts: controllerForSearcing.text);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: UdDesign.pt(100),
+                                  ),
+                                  child: const Text('Search box is empty'),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         child: const Text(
                           'Search',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
 
-networkImagescall({required src, dynamic color}) {
+networkImagescall({required src, dynamic color, textofnoimage}) {
   return Image.network(
     src,
     fit: BoxFit.cover,
@@ -22,8 +22,11 @@ networkImagescall({required src, dynamic color}) {
       );
     },
     errorBuilder: (context, exception, stackTrace) {
-      return const Center(
-        child: Text('No image found...'),
+      return Center(
+        child: Text(
+          'No image found...',
+          style: TextStyle(color: textofnoimage ?? Colors.black),
+        ),
       );
     },
   );

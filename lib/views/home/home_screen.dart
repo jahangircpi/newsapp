@@ -9,7 +9,6 @@ import 'package:newsapp/utilities/widgets/netimagecalling.dart';
 import 'package:newsapp/views/home/components/allpopularnewswebsite.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
-
 import '../../utilities/widgets/contianer_white.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -106,21 +105,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         width: size.width,
                                         child: InkWell(
-                                            onTap: () {
-                                              printer(searchcontroller
-                                                  .homeImageIndex);
-                                            },
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: UdDesign.pt(4),
-                                              ),
-                                              child: networkImagescall(
+                                          onTap: () {
+                                            printer(searchcontroller
+                                                .homeImageIndex);
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: UdDesign.pt(4),
+                                            ),
+                                            child: networkImagescall(
                                                 src: searchcontroller
                                                     .searchDataLists
                                                     .articles![index]
                                                     .urlToImage!,
-                                              ),
-                                            )),
+                                                textofnoimage: Colors.white),
+                                          ),
+                                        ),
                                       ),
                                       Positioned(
                                         bottom: UdDesign.pt(15),

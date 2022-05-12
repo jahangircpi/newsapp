@@ -62,7 +62,7 @@ class _RootScreenState extends State<RootScreen> {
             items: [
               BottomNavigationBarItem(
                   icon: iconwithdesignmethod(
-                    icon: Passets.worldIcon1,
+                    icon: Passets.worldIcon,
                     titleText: "World",
                     currentIndex: 0,
                   ),
