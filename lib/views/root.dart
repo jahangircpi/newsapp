@@ -14,7 +14,7 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   getBody(current) {
     switch (current) {
@@ -96,7 +96,7 @@ class _RootScreenState extends State<RootScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: PColors.basicColor,
+                      color: PColors.backgrounColor,
                       borderRadius: BorderRadius.circular(38),
                     ),
                     child: Padding(
@@ -110,7 +110,7 @@ class _RootScreenState extends State<RootScreen> {
                           Image.asset(
                             icon,
                             color: _currentIndex == currentIndex
-                                ? Colors.white
+                                ? PColors.containerColor
                                 : Colors.black,
                             height: UdDesign.pt(25),
                           ),

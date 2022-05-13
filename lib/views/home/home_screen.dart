@@ -11,12 +11,14 @@ import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/widgets/netimagecalling.dart';
 import 'package:newsapp/utilities/widgets/top_sheet.dart';
 import 'package:newsapp/views/home/components/allpopularnewswebsite.dart';
+import 'package:newsapp/views/home/components/filtersection.dart';
 import 'package:newsapp/views/home/components/start_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/contianer_white.dart';
 import 'components/apikeyslists.dart';
+import 'components/settings_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -71,97 +73,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          printer('it ');
-                          Scaffold.of(context).openDrawer();
-                        },
-                        child: const Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showTopModalSheet(
-                            context: context,
-                            child: Container(
-                              height: size.height * 0.2,
-                              color: PColors.backgrounColor,
-                              child: Column(
-                                children: [
-                                  const Center(
-                                    child: Text(
-                                      'API Keys',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                  DropdownButton(
-                                    dropdownColor: PColors.backgrounColor,
-                                    value: homecontroller.apikey,
-                                    items: apikeyslists2.map((e) {
-                                      return DropdownMenuItem<String>(
-                                        // onTap: () {
-                                        //   homecontroller.updateNewsPaper(
-                                        //     newspaper: e.title!,
-                                        //   );
-                                        // },
-                                        value: e.title!,
-                                        child: Text(
-                                          e.name!.toString().toUpperCase(),
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (v) {
-                                      homecontroller.updateapikey(
-                                        key: v,
-                                      );
-                                      Urls.apiKey = homecontroller.apikey!;
-                                      StorageManager.saveData(
-                                          "apiKey", homecontroller.apikey!);
-                                    },
-                                  ),
-                                  const Spacer(),
-                                  InkWell(
-                                    onTap: () {
-                                      pop(context: context);
-                                      var newList = popularwebsiteLists
-                                          .map((e) => e.title!)
-                                          .toList()
-                                          .toString()
-                                          .replaceAll('[', '')
-                                          .replaceAll(']', '')
-                                          .replaceAll(' ', '')
-                                          .trim();
-                                      homecontroller.getHomeData(
-                                          newswebsite: newList);
-                                    },
-                                    child: Container(
-                                        color: PColors.basicColor,
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: UdDesign.pt(12),
-                                            vertical: UdDesign.pt(12),
-                                          ),
-                                          child: const Text(
-                                            "Update the key and load",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        )),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Icon(
-                          Icons.settings,
-                          color: Colors.white,
-                        ),
-                      ),
+                      FilterSection(homecontroller: homecontroller),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Scaffold.of(context).openDrawer();
+                      //   },
+                      //   child: const Icon(
+                      //     Icons.filter_alt,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                      SettingSection(homecontroller: homecontroller),
                     ],
                   ),
                 ),
@@ -177,6 +99,87 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  InkWell settingsection(
+      BuildContext context, Size size, HomeController homecontroller) {
+    return InkWell(
+      onTap: () {
+        showTopModalSheet(
+          context: context,
+          child: Container(
+            height: size.height * 0.2,
+            color: PColors.backgrounColor,
+            child: Column(
+              children: [
+                const Center(
+                  child: Text(
+                    'API Keys',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                DropdownButton(
+                  dropdownColor: PColors.backgrounColor,
+                  value: homecontroller.apikey,
+                  items: apikeyslists2.map((e) {
+                    return DropdownMenuItem<String>(
+                      // onTap: () {
+                      //   homecontroller.updateNewsPaper(
+                      //     newspaper: e.title!,
+                      //   );
+                      // },
+                      value: e.title!,
+                      child: Text(
+                        e.name!.toString().toUpperCase(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (v) {
+                    homecontroller.updateapikey(
+                      key: v,
+                    );
+                    Urls.apiKey = homecontroller.apikey!;
+                    StorageManager.saveData("apiKey", homecontroller.apikey!);
+                  },
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    pop(context: context);
+                    var newList = popularwebsiteLists
+                        .map((e) => e.title!)
+                        .toList()
+                        .toString()
+                        .replaceAll('[', '')
+                        .replaceAll(']', '')
+                        .replaceAll(' ', '')
+                        .trim();
+                    homecontroller.getHomeData(newswebsite: newList);
+                  },
+                  child: Container(
+                      color: PColors.basicColor,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: UdDesign.pt(12),
+                          vertical: UdDesign.pt(12),
+                        ),
+                        child: const Text(
+                          "Update the key and load",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+      child: const Icon(
+        Icons.settings,
+        color: Colors.white,
       ),
     );
   }
@@ -346,10 +349,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             .replaceAll(']', '')
                             .replaceAll(' ', '')
                             .trim();
-                        context.read<HomeController>().getHomeData(
-                            newswebsite: newList,
-                            fromdate: homecontroller.timeNow,
-                            todate: homecontroller.timeNow);
+                        context
+                            .read<HomeController>()
+                            .getHomeData(
+                                newswebsite: newList,
+                                fromdate: DateTime(
+                                        homecontroller.dateNow.year,
+                                        homecontroller.dateNow.month - 1,
+                                        homecontroller.dateNow.day)
+                                    .toString()
+                                    .split(' ')[0],
+                                todate: homecontroller.dateNow)
+                            .toString()
+                            .split(' ')[0];
                       } else {
                         homecontroller.getHomeData(
                             newswebsite: popularwebsiteLists[index].title!);

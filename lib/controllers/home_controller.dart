@@ -13,8 +13,6 @@ class HomeController extends ChangeNotifier {
   DataState homeDataState = DataState.initial;
 
   int? popularItemIndex = 0;
-  DateTime dateNow = DateTime.now();
-  var timeNow = DateTime.now().toString().split(' ')[0];
 
   String? selectNewsPaper = popularwebsiteLists[0].title!;
   String? apikey = apikeyslists2[0].title!;
@@ -28,8 +26,9 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  var fromDate;
-  var toDate;
+  DateTime dateNow = DateTime.now();
+  DateTime fromDate = DateTime.now();
+  DateTime toDate = DateTime.now();
 
   updateDate({fromdate, fromorto}) {
     if (fromorto == 'fromfunction') {
@@ -47,12 +46,17 @@ class HomeController extends ChangeNotifier {
 
   getHomeData({required newswebsite, fromdate, todate}) async {
     homeDataState = DataState.loading;
+    var timeNowFrom = DateTime(dateNow.year, dateNow.month - 1, dateNow.day)
+        .toString()
+        .split(' ')[0];
+    var timeNowTo = DateTime.now().toString().split(' ')[0];
+
     try {
       Response data = await getHttp(
         path: Urls.homeapi(
             website: newswebsite,
-            from: fromdate ?? timeNow,
-            to: fromdate ?? timeNow),
+            from: fromdate ?? timeNowFrom,
+            to: fromdate ?? timeNowTo),
       );
       if (data.statusCode == 200) {
         homedataLists = HomePageNewsModel.fromJson(data.data);

@@ -42,6 +42,7 @@ class _WorldScreenState extends State<WorldScreen> {
             ),
             child: Column(
               children: [
+                gapY(PThemes.padding),
                 Expanded(
                   flex: 0,
                   child: Row(

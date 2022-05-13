@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/home_controller.dart';
-import 'package:newsapp/utilities/constants/colors.dart';
-import 'package:newsapp/utilities/functions/gap.dart';
-import 'package:newsapp/utilities/functions/print.dart';
+import 'package:newsapp/utilities/widgets/top_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
+import '../../../utilities/constants/colors.dart';
+import '../../../utilities/functions/gap.dart';
 import '../../../utilities/functions/navigations.dart';
+import '../../../utilities/functions/print.dart';
 import 'allpopularnewswebsite.dart';
 
-class StartDrawer extends StatelessWidget {
-  const StartDrawer({Key? key}) : super(key: key);
+class FilterSection extends StatelessWidget {
+  final HomeController homecontroller;
+  const FilterSection({Key? key, required this.homecontroller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Consumer<HomeController>(
-      builder: ((context, homecontroller, child) {
-        return Drawer(
-          child: Center(
+    return InkWell(
+      child: const Icon(
+        Icons.filter_alt,
+        color: Colors.white,
+      ),
+      onTap: () {
+        showTopModalSheet(
+          context: context,
+          child: Container(
+            color: Colors.white,
+            // height: 300,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("NewsPaper"),
+                const Text(
+                  "NewsPaper",
+                ),
                 gapY(10),
                 Container(
                   color: PColors.backgrounColor,
@@ -31,6 +43,11 @@ class StartDrawer extends StatelessWidget {
                     value: homecontroller.selectNewsPaper,
                     items: popularwebsiteLists.map((e) {
                       return DropdownMenuItem<String>(
+                        // onTap: () {
+                        //   homecontroller.updateNewsPaper(
+                        //     newspaper: e.title!,
+                        //   );
+                        // },
                         value: e.title!,
                         child: Text(
                           e.webSite!.toString().toUpperCase(),
@@ -49,7 +66,9 @@ class StartDrawer extends StatelessWidget {
                 gapY(10),
                 InkWell(
                   onTap: () async {},
-                  child: const Text('Pick the days'),
+                  child: const Text(
+                    'Pick the days',
+                  ),
                 ),
                 gapY(10),
                 Row(
@@ -125,7 +144,6 @@ class StartDrawer extends StatelessWidget {
                       ),
                       child: Text(
                         homecontroller.fromDate.toString().split(' ')[0],
-                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                     Padding(
@@ -135,7 +153,6 @@ class StartDrawer extends StatelessWidget {
                       ),
                       child: Text(
                         homecontroller.toDate.toString().split(' ')[0],
-                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
@@ -188,7 +205,7 @@ class StartDrawer extends StatelessWidget {
             ),
           ),
         );
-      }),
-    ));
+      },
+    );
   }
 }

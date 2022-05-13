@@ -10,6 +10,3 @@ class Urls {
   static String search({searchText}) =>
       "$baseUrl${"/everything?q=$searchText&sortBy=relevancy&apiKey=$apiKey"}";
 }
-
-
-// '8454ed8e9a2b418d8227098efe5e343b'

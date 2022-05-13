@@ -33,8 +33,6 @@ class TopModalSheetState<T> extends State<TopModalSheet<T>>
   bool _isPoping = false;
 
   double get _childHeight {
-    final RenderObject? renderBox =
-        _childKey.currentContext!.findRenderObject();
     return 100;
   }
 
@@ -45,8 +43,8 @@ class TopModalSheetState<T> extends State<TopModalSheet<T>>
   void initState() {
     super.initState();
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
     _animation = Tween<double>(begin: -1, end: 0).animate(_animationController);
 
     _animationController.addStatusListener((status) {
@@ -75,11 +73,13 @@ class TopModalSheetState<T> extends State<TopModalSheet<T>>
     if (details.velocity.pixelsPerSecond.dy > 700) {
       final double flingVelocity =
           -details.velocity.pixelsPerSecond.dy / _childHeight;
-      if (_animationController.value > 0.0)
+      if (_animationController.value > 0.0) {
         _animationController.fling(velocity: flingVelocity);
+      }
     } else if (_animationController.value < 0.5) {
-      if (_animationController.value > 0.0)
+      if (_animationController.value > 0.0) {
         _animationController.fling(velocity: -1.0);
+      }
     } else {
       _animationController.reverse();
       widget.backgroundColor = Colors.transparent;
@@ -123,7 +123,7 @@ class TopModalSheetState<T> extends State<TopModalSheet<T>>
                               MediaQuery.of(context).size.height *
                                   _animation.value,
                               0.0),
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,
