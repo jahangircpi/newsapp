@@ -3,15 +3,20 @@ import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/constants/enums.dart';
+import 'package:newsapp/utilities/constants/urls.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
+import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/widgets/netimagecalling.dart';
+import 'package:newsapp/utilities/widgets/top_sheet.dart';
 import 'package:newsapp/views/home/components/allpopularnewswebsite.dart';
 import 'package:newsapp/views/home/components/start_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/contianer_white.dart';
+import 'components/apikeyslists.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -25,6 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    StorageManager.readData("apiKey").then((value) {
+      Urls.apiKey = value;
+      context.read<HomeController>().apikey = value;
+    });
     callBack(() {
       var newList = popularwebsiteLists
           .map((e) => e.title!)
@@ -64,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       InkWell(
                         onTap: () {
+                          printer('it ');
                           Scaffold.of(context).openDrawer();
                         },
                         child: const Icon(
@@ -71,9 +81,86 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      const Icon(
-                        Icons.settings,
-                        color: Colors.white,
+                      InkWell(
+                        onTap: () {
+                          showTopModalSheet(
+                            context: context,
+                            child: Container(
+                              height: size.height * 0.2,
+                              color: PColors.backgrounColor,
+                              child: Column(
+                                children: [
+                                  const Center(
+                                    child: Text(
+                                      'API Keys',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  DropdownButton(
+                                    dropdownColor: PColors.backgrounColor,
+                                    value: homecontroller.apikey,
+                                    items: apikeyslists2.map((e) {
+                                      return DropdownMenuItem<String>(
+                                        // onTap: () {
+                                        //   homecontroller.updateNewsPaper(
+                                        //     newspaper: e.title!,
+                                        //   );
+                                        // },
+                                        value: e.title!,
+                                        child: Text(
+                                          e.name!.toString().toUpperCase(),
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (v) {
+                                      homecontroller.updateapikey(
+                                        key: v,
+                                      );
+                                      Urls.apiKey = homecontroller.apikey!;
+                                      StorageManager.saveData(
+                                          "apiKey", homecontroller.apikey!);
+                                    },
+                                  ),
+                                  const Spacer(),
+                                  InkWell(
+                                    onTap: () {
+                                      pop(context: context);
+                                      var newList = popularwebsiteLists
+                                          .map((e) => e.title!)
+                                          .toList()
+                                          .toString()
+                                          .replaceAll('[', '')
+                                          .replaceAll(']', '')
+                                          .replaceAll(' ', '')
+                                          .trim();
+                                      homecontroller.getHomeData(
+                                          newswebsite: newList);
+                                    },
+                                    child: Container(
+                                        color: PColors.basicColor,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: UdDesign.pt(12),
+                                            vertical: UdDesign.pt(12),
+                                          ),
+                                          child: const Text(
+                                            "Update the key and load",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.settings,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),

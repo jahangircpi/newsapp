@@ -1,9 +1,15 @@
+import 'package:newsapp/controllers/home_controller.dart';
+
 class Urls {
+  static String apiKey = HomeController().apikey!;
   static const baseUrl = 'https://newsapi.org/v2/';
   static String categoryData({country, category}) =>
-      "$baseUrl${"/top-headlines?country=$country&category=$category&apiKey=8454ed8e9a2b418d8227098efe5e343b"}";
+      "$baseUrl${"/top-headlines?country=$country&category=$category&apiKey=$apiKey"}";
   static String homeapi({website, from, to}) =>
-      "$baseUrl/everything?domains=$website&language=en&from=$from&to=$to&apiKey=0aacbc697a864022adbf7c160ca39a02";
+      "$baseUrl/everything?domains=$website&language=en&from=$from&to=$to&apiKey=$apiKey";
   static String search({searchText}) =>
-      "$baseUrl${"/everything?q=$searchText&sortBy=relevancy&apiKey=0aacbc697a864022adbf7c160ca39a02"}";
+      "$baseUrl${"/everything?q=$searchText&sortBy=relevancy&apiKey=$apiKey"}";
 }
+
+
+// '8454ed8e9a2b418d8227098efe5e343b'

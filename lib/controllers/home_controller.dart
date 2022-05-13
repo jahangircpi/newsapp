@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:newsapp/utilities/constants/enums.dart';
+import 'package:newsapp/views/home/components/apikeyslists.dart';
 import '../models/home_page_news_model.dart';
 import '../utilities/constants/urls.dart';
 import '../utilities/functions/print.dart';
@@ -16,6 +17,16 @@ class HomeController extends ChangeNotifier {
   var timeNow = DateTime.now().toString().split(' ')[0];
 
   String? selectNewsPaper = popularwebsiteLists[0].title!;
+  String? apikey = apikeyslists2[0].title!;
+  updateapikey({key}) {
+    apikey = key;
+    notifyListeners();
+  }
+
+  updateNewsPaper({newspaper}) {
+    selectNewsPaper = newspaper;
+    notifyListeners();
+  }
 
   var fromDate;
   var toDate;
@@ -26,11 +37,6 @@ class HomeController extends ChangeNotifier {
     } else {
       toDate = fromdate;
     }
-    notifyListeners();
-  }
-
-  updateNewsPaper({newspaper}) {
-    selectNewsPaper = newspaper;
     notifyListeners();
   }
 

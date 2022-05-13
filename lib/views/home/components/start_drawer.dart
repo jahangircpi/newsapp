@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/home_controller.dart';
-import 'package:newsapp/models/global_countries.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/constants/urls.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
-import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
-import 'package:newsapp/views/world/components/category_lists.dart';
+import 'package:newsapp/utilities/services/sharedpreference_service.dart';
+import 'package:newsapp/views/home/components/apikeyslists.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
@@ -16,7 +16,6 @@ class StartDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var value = 'All';
     return SafeArea(child: Consumer<HomeController>(
       builder: ((context, homecontroller, child) {
         return Drawer(
@@ -42,6 +41,7 @@ class StartDrawer extends StatelessWidget {
                   homecontroller.updateNewsPaper(
                     newspaper: v,
                   );
+                  printer(v);
                 },
               ),
               InkWell(
@@ -141,30 +141,31 @@ class StartDrawer extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  pop(context: context);
+                  printer(Urls.apiKey);
+                  // pop(context: context);
 
-                  if (homecontroller.selectNewsPaper == 'All') {
-                    var newList = popularwebsiteLists
-                        .map((e) => e.title!)
-                        .toList()
-                        .toString()
-                        .replaceAll('[', '')
-                        .replaceAll(']', '')
-                        .replaceAll(' ', '')
-                        .trim();
-                    context.read<HomeController>().getHomeData(
-                        newswebsite: newList,
-                        fromdate:
-                            homecontroller.fromDate.toString().split(' ')[0],
-                        todate: homecontroller.toDate.toString().split(' ')[0]);
-                  } else {
-                    printer('it is here ');
-                    homecontroller.getHomeData(
-                        newswebsite: homecontroller.selectNewsPaper,
-                        fromdate:
-                            homecontroller.fromDate.toString().split(' ')[0],
-                        todate: homecontroller.toDate.toString().split(' ')[0]);
-                  }
+                  // if (homecontroller.selectNewsPaper == 'All') {
+                  //   var newList = popularwebsiteLists
+                  //       .map((e) => e.title!)
+                  //       .toList()
+                  //       .toString()
+                  //       .replaceAll('[', '')
+                  //       .replaceAll(']', '')
+                  //       .replaceAll(' ', '')
+                  //       .trim();
+                  //   context.read<HomeController>().getHomeData(
+                  //       newswebsite: newList,
+                  //       fromdate:
+                  //           homecontroller.fromDate.toString().split(' ')[0],
+                  //       todate: homecontroller.toDate.toString().split(' ')[0]);
+                  // } else {
+                  //   printer('it is here ');
+                  //   homecontroller.getHomeData(
+                  //       newswebsite: homecontroller.selectNewsPaper,
+                  //       fromdate:
+                  //           homecontroller.fromDate.toString().split(' ')[0],
+                  //       todate: homecontroller.toDate.toString().split(' ')[0]);
+                  // }
                 },
                 child: Container(
                   color: PColors.basicColor,

@@ -33,21 +33,3 @@ class WorldController extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-// getCategoryData({countryname, categoryName}) async {
-//   worldDataState = DataState.loading;
-//   try {
-//     Response categorydata = await getHttp(
-//       path: Urls.categoryData(category: categoryName, country: countryname),
-//     );
-//     if (categorydata.statusCode == 200) {
-//       categoriesLists = Category.fromJson(categorydata.data);
-//       worldDataState = DataState.loaded;
-//       printer(categoriesLists.articles);
-//     }
-//   } catch (e) {
-//     worldDataState = DataState.error;
-//     printer(e);
-//   }
-//   notifyListeners();
-// }
