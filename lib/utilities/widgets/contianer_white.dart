@@ -73,27 +73,32 @@ containerwhite({required dataStateEnum, controller, listName}) {
                                           MainAxisAlignment.start,
                                       children: [
                                         gapY(5),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              color: Colors.red,
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: UdDesign.pt(8),
-                                                  vertical: UdDesign.pt(8),
-                                                ),
-                                                child: Text(
-                                                  lists.source!.name ??
-                                                      "Source",
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                color: Colors.red,
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: UdDesign.pt(8),
+                                                    vertical: UdDesign.pt(8),
+                                                  ),
+                                                  child: Text(
+                                                    lists.source!.name ??
+                                                        "Source",
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            const Text("3:40 PM")
-                                          ],
+                                              gapX(10),
+                                              Text(
+                                                  "${lists.publishedAt.year.toString()}-${lists.publishedAt.month.toString().padLeft(2, '0')}-${lists.publishedAt.day.toString().padLeft(2, '0')} ${lists.publishedAt.hour.toString().padLeft(2, '0')}-${lists.publishedAt.minute.toString().padLeft(2, '0')}")
+                                            ],
+                                          ),
                                         ),
                                         gapY(5),
                                         Text(

@@ -4,9 +4,11 @@ import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/constants/enums.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
+import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/widgets/netimagecalling.dart';
 import 'package:newsapp/views/home/components/allpopularnewswebsite.dart';
+import 'package:newsapp/views/home/components/start_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../utilities/widgets/contianer_white.dart';
@@ -19,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final ScrollController _controller = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -41,17 +44,40 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  late final ScrollController _controller = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: const StartDrawer(),
       body: SafeArea(
         child: Consumer<HomeController>(
           builder: (context, homecontroller, child) {
             return Column(
               children: [
+                gapY(10),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: UdDesign.pt(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        child: const Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
                 topbarCategory(homecontroller),
                 slidinglistview(size),
                 Expanded(
@@ -233,9 +259,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             .replaceAll(']', '')
                             .replaceAll(' ', '')
                             .trim();
-                        context
-                            .read<HomeController>()
-                            .getHomeData(newswebsite: newList);
+                        context.read<HomeController>().getHomeData(
+                            newswebsite: newList,
+                            fromdate: homecontroller.timeNow,
+                            todate: homecontroller.timeNow);
                       } else {
                         homecontroller.getHomeData(
                             newswebsite: popularwebsiteLists[index].title!);
