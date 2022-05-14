@@ -30,7 +30,7 @@ class _RootScreenState extends State<RootScreen> {
 
       case 2:
         {
-          return SearchScreen();
+          return const SearchScreen();
         }
     }
   }

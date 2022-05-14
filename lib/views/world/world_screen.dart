@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/constants/themes.dart';
-import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/world/details_categories_screens.dart';

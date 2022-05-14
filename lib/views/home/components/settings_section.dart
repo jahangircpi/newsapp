@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/views/home/components/apikeyslists.dart';
+import 'package:newsapp/views/saved_news/saved_news.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
@@ -63,34 +64,46 @@ class SettingSection extends StatelessWidget {
                     );
                   },
                 ),
-                InkWell(
-                  onTap: () {
-                    pop(context: context);
-                    var newList = popularwebsiteLists
-                        .map((e) => e.title!)
-                        .toList()
-                        .toString()
-                        .replaceAll('[', '')
-                        .replaceAll(']', '')
-                        .replaceAll(' ', '')
-                        .trim();
-                    homecontroller!.getHomeData(newswebsite: newList);
-                    context
-                        .read<SearchController>()
-                        .getSearchData(searchTexts: 'Flutter');
-                  },
-                  child: Container(
-                      color: PColors.basicColor,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: UdDesign.pt(12),
-                          vertical: UdDesign.pt(12),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        pop(context: context);
+                        var newList = popularwebsiteLists
+                            .map((e) => e.title!)
+                            .toList()
+                            .toString()
+                            .replaceAll('[', '')
+                            .replaceAll(']', '')
+                            .replaceAll(' ', '')
+                            .trim();
+                        homecontroller!.getHomeData(newswebsite: newList);
+                        context
+                            .read<SearchController>()
+                            .getSearchData(searchTexts: 'Flutter');
+                      },
+                      child: Container(
+                        color: PColors.basicColor,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: UdDesign.pt(12),
+                            vertical: UdDesign.pt(12),
+                          ),
+                          child: const Text(
+                            "Update the key and load",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                        child: const Text(
-                          "Update the key and load",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          push(
+                              screen: const SavedNewsScreen(),
+                              context: context);
+                        },
+                        child: const Text("Saved News Screen"))
+                  ],
                 ),
                 gapY(20)
               ],

@@ -9,7 +9,6 @@ import '../utilities/services/dio_services.dart';
 class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
   DataState searchDataState = DataState.initial;
-
   int homeImageIndex = 0;
 
   getHomeIndex({givenIndex}) {

@@ -13,7 +13,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerForSearcing = TextEditingController();
-    ScrollController scrollController = ScrollController();
+
     return Scaffold(
       body: SafeArea(
         child: Consumer<SearchController>(
@@ -25,98 +25,103 @@ class SearchScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: UdDesign.pt(8),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: TextField(
-                          controller: controllerForSearcing,
-                          decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: InputBorder.none,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: PColors.backgrounColor, width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: PColors.backgrounColor, width: 1.0),
-                              ),
-                              prefixIcon: const Icon(Icons.search),
-                              hintText: 'Search anything'),
-                        ),
-                      ),
-                      const Expanded(
-                        flex: 0,
-                        child: SizedBox(),
-                      ),
-                      gapX(10),
-                      Expanded(
-                        flex: 0,
-                        child: InkWell(
-                          onTap: () async {
-                            if (controllerForSearcing.text.isNotEmpty) {
-                              await searchcontroller.getSearchData(
-                                  searchTexts: controllerForSearcing.text);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: UdDesign.pt(50),
-                                    ),
-                                    child: const Text('Search box is empty'),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.red,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: PColors.basicColor,
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                UdDesign.pt(8),
-                              ),
-                              child: const Text(
-                                'Search',
-                                style: TextStyle(
-                                  color: PColors.containerColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: searchbar(
+                      controllerForSearcing, searchcontroller, context),
                 ),
                 gapY(4),
                 Expanded(
                   child: containerwhite(
                       dataStateEnum: searchcontroller.searchDataState,
                       listName: searchcontroller.searchDataLists.articles,
-                      listController: scrollController),
+                      onTap: () {}),
                 )
               ],
             );
           }),
         ),
       ),
+    );
+  }
+
+  Row searchbar(TextEditingController controllerForSearcing,
+      SearchController searchcontroller, BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 4,
+          child: TextField(
+            controller: controllerForSearcing,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                fillColor: Colors.white,
+                filled: true,
+                border: InputBorder.none,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                      color: PColors.backgrounColor, width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                      color: PColors.backgrounColor, width: 1.0),
+                ),
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Search anything'),
+          ),
+        ),
+        const Expanded(
+          flex: 0,
+          child: SizedBox(),
+        ),
+        gapX(10),
+        Expanded(
+          flex: 0,
+          child: InkWell(
+            onTap: () {
+              if (controllerForSearcing.text.isNotEmpty) {
+                searchcontroller.getSearchData(
+                    searchTexts: controllerForSearcing.text);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: UdDesign.pt(50),
+                      ),
+                      child: const Text('Search box is empty'),
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: PColors.basicColor,
+                borderRadius: BorderRadius.circular(7),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(
+                  UdDesign.pt(8),
+                ),
+                child: const Text(
+                  'Search',
+                  style: TextStyle(
+                    color: PColors.containerColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

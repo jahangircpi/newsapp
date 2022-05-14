@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/controllers/favorite_controller.dart';
+import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
-
 import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../functions/gap.dart';
@@ -40,7 +41,13 @@ containerwhite({
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: UdDesign.pt(4)),
                     child: InkWell(
-                      onTap: onTap,
+                      onTap: () {
+                        // if (SavedController()
+                        //         .addingtoLists(title: listName.title) ==
+                        //     true) {
+                        //   printer(true);
+                        // }
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: PColors.containerColor,
@@ -103,6 +110,34 @@ containerwhite({
                                       style: TextStyle(
                                           fontSize: UdDesign.fontSize(18),
                                           fontWeight: FontWeight.bold),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Consumer<FavoriteController>(
+                                          builder: ((context,
+                                              favoritecontroller, child) {
+                                            return InkWell(
+                                              onTap: () {
+                                                favoritecontroller
+                                                    .addingtoLists(
+                                                        newsItem: lists);
+                                              },
+                                              child: Icon(
+                                                Icons.favorite,
+                                                color: favoritecontroller
+                                                        .saveArticle!
+                                                        .indexWhere((element) =>
+                                                            element.title ==
+                                                            lists.title)
+                                                        .isNegative
+                                                    ? Colors.black
+                                                    : Colors.red,
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),

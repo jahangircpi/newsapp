@@ -96,17 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     dataStateEnum: homecontroller.homeDataState,
                     listController: _controller2,
                     listName: homecontroller.articlesLists!,
-                    onTap: () {
-                      //b0be5f92f10d4436a83e56b900097622
-                      // 572e6aeed52e407c8dcf7a6d03cd980d
-                      printer(Urls.apiKey);
-                      printer(page);
-                      printer(homecontroller.articlesLists!.length);
-                    },
+                    onTap: () {},
                   ),
                 ),
                 homecontroller.homeDataState == DataState.isMoreDatAvailable
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : const SizedBox(),
               ],
             );
