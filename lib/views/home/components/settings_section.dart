@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/views/home/components/apikeyslists.dart';
+import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
 import '../../../controllers/home_controller.dart';
@@ -73,6 +75,9 @@ class SettingSection extends StatelessWidget {
                         .replaceAll(' ', '')
                         .trim();
                     homecontroller!.getHomeData(newswebsite: newList);
+                    context
+                        .read<SearchController>()
+                        .getSearchData(searchTexts: 'Flutter');
                   },
                   child: Container(
                       color: PColors.basicColor,

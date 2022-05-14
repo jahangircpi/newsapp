@@ -3,11 +3,13 @@ import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/constants/themes.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/world/components/category_lists.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
 import '../../utilities/constants/colors.dart';
+import '../../utilities/constants/enums.dart';
 import '../../utilities/widgets/contianer_white.dart';
 
 class Detailsglobal extends StatefulWidget {
@@ -22,13 +24,32 @@ class Detailsglobal extends StatefulWidget {
 }
 
 class _DetailsglobalState extends State<Detailsglobal> {
+  late ScrollController scrollercontroller = ScrollController();
+  int page = 1;
   @override
   void initState() {
     super.initState();
-    callBack(() {
-      context.read<WorldController>().getCategoryData(
+  
+    callBack(() async {
+      await context.read<WorldController>().getCategoryData(
           countryname: widget.country, categoryName: "business");
     });
+    scrollercontroller.addListener(() {
+      if (scrollercontroller.position.pixels ==
+          scrollercontroller.position.maxScrollExtent) {
+        printer("reached end");
+        page++;
+        if (page <= 5) {
+          context.read<WorldController>().getmoreTask(
+              countryname: widget.country,
+              categoryName:
+                  catLists[context.read<WorldController>().categoryIndex!]
+                      .title,
+              pages: page);
+        }
+      }
+    });
+    setState(() {});
   }
 
   @override
@@ -45,11 +66,6 @@ class _DetailsglobalState extends State<Detailsglobal> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
                         Navigator.pop(context);
                       },
                       child: Padding(
@@ -140,10 +156,16 @@ class _DetailsglobalState extends State<Detailsglobal> {
                         left: PThemes.padding, right: PThemes.padding),
                     child: containerwhite(
                         dataStateEnum: worldcontroller.worldDataState,
-                        controller: worldcontroller,
-                        listName: worldcontroller.worldnewsLists),
+                        listName: worldcontroller.worldnewsLists,
+                        onTap: () {
+                          printer(worldcontroller.worldnewsLists!.length);
+                        },
+                        listController: scrollercontroller),
                   ),
                 ),
+                worldcontroller.worldDataState == DataState.isMoreDatAvailable
+                    ? const CircularProgressIndicator()
+                    : const SizedBox(),
               ],
             );
           }),

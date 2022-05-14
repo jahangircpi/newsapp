@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/constants/themes.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
+import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/world/details_categories_screens.dart';
 import 'package:newsapp/models/global_countries.dart';
+import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../controllers/world_controller.dart';
 import '../../utilities/functions/gap.dart';
 
 class WorldScreen extends StatefulWidget {
@@ -25,7 +28,6 @@ class _WorldScreenState extends State<WorldScreen> {
     super.initState();
     countriesnames = fullCountriesName;
     setState(() {});
-    callBack(() async {});
   }
 
   @override
@@ -96,14 +98,13 @@ class _WorldScreenState extends State<WorldScreen> {
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Detailsglobal(
-                                country: countriesnames![index].shortname!,
-                                fullcountryname: countriesnames![index].name!,
-                              ),
+                        onTap: () async {
+                          context.read<WorldController>().categoryIndex = 0;
+                          push(
+                            context: context,
+                            screen: Detailsglobal(
+                              country: countriesnames![index].shortname!,
+                              fullcountryname: countriesnames![index].name!,
                             ),
                           );
                         },

@@ -29,31 +29,42 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final ScrollController _controller = ScrollController();
+  late final ScrollController _controller2 = ScrollController();
   @override
   void initState() {
     super.initState();
+    var newList = popularwebsiteLists
+        .map((e) => e.title!)
+        .toList()
+        .toString()
+        .replaceAll('[', '')
+        .replaceAll(']', '')
+        .replaceAll(' ', '')
+        .trim();
     StorageManager.readData("apiKey").then((value) {
-      Urls.apiKey = value;
+      if (value != null) {
+        Urls.apiKey = value;
+      }
+
       context.read<HomeController>().apikey = value;
-    });
-    callBack(() {
-      var newList = popularwebsiteLists
-          .map((e) => e.title!)
-          .toList()
-          .toString()
-          .replaceAll('[', '')
-          .replaceAll(']', '')
-          .replaceAll(' ', '')
-          .trim();
-      if (context.read<HomeController>().homeDataState != DataState.loaded) {
-        context.read<HomeController>().getHomeData(newswebsite: newList);
-      }
-      if (context.read<SearchController>().searchDataState !=
-          DataState.loaded) {
-        context.read<SearchController>().getSearchData(searchTexts: 'Flutter');
-      }
-    });
+    }).then(((value) {
+      callBack(() {
+        if (context.read<HomeController>().homeDataState != DataState.loaded) {
+          context.read<HomeController>().getHomeData(newswebsite: newList);
+        }
+        if (context.read<SearchController>().searchDataState !=
+            DataState.loaded) {
+          context
+              .read<SearchController>()
+              .getSearchData(searchTexts: 'Flutter');
+        }
+      });
+    }));
+
+    paginationwithcontroller(newList);
   }
+
+  int page = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FilterSection(homecontroller: homecontroller),
-                      // InkWell(
-                      //   onTap: () {
-                      //     Scaffold.of(context).openDrawer();
-                      //   },
-                      //   child: const Icon(
-                      //     Icons.filter_alt,
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
                       SettingSection(homecontroller: homecontroller),
                     ],
                   ),
@@ -91,10 +93,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 slidinglistview(size),
                 Expanded(
                   child: containerwhite(
-                      controller: homecontroller,
-                      dataStateEnum: homecontroller.homeDataState,
-                      listName: homecontroller.homedataLists),
+                    dataStateEnum: homecontroller.homeDataState,
+                    listController: _controller2,
+                    listName: homecontroller.articlesLists!,
+                    onTap: () {
+                      //b0be5f92f10d4436a83e56b900097622
+                      // 572e6aeed52e407c8dcf7a6d03cd980d
+                      printer(Urls.apiKey);
+                      printer(page);
+                      printer(homecontroller.articlesLists!.length);
+                    },
+                  ),
                 ),
+                homecontroller.homeDataState == DataState.isMoreDatAvailable
+                    ? CircularProgressIndicator()
+                    : const SizedBox(),
               ],
             );
           },
@@ -125,11 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   value: homecontroller.apikey,
                   items: apikeyslists2.map((e) {
                     return DropdownMenuItem<String>(
-                      // onTap: () {
-                      //   homecontroller.updateNewsPaper(
-                      //     newspaper: e.title!,
-                      //   );
-                      // },
                       value: e.title!,
                       child: Text(
                         e.name!.toString().toUpperCase(),
@@ -160,17 +168,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     homecontroller.getHomeData(newswebsite: newList);
                   },
                   child: Container(
-                      color: PColors.basicColor,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: UdDesign.pt(12),
-                          vertical: UdDesign.pt(12),
-                        ),
-                        child: const Text(
-                          "Update the key and load",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
+                    color: PColors.basicColor,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: UdDesign.pt(12),
+                        vertical: UdDesign.pt(12),
+                      ),
+                      child: const Text(
+                        "Update the key and load",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -190,9 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return searchcontroller.searchDataState == DataState.initial
             ? const SizedBox()
             : searchcontroller.searchDataState == DataState.loading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? const Text("Data is loading")
                 : searchcontroller.searchDataState == DataState.loaded
                     ? Stack(
                         children: [
@@ -320,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SizedBox topbarCategory(HomeController homecontroller) {
+  Widget topbarCategory(HomeController homecontroller) {
     return SizedBox(
       height: UdDesign.pt(80),
       child: Column(
@@ -339,6 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () {
+                      page = 1;
                       homecontroller.getPopularItemIndex(indexGiven: index);
                       if (popularwebsiteLists[index].title == 'All') {
                         var newList = popularwebsiteLists
@@ -363,8 +371,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             .toString()
                             .split(' ')[0];
                       } else {
-                        homecontroller.getHomeData(
-                            newswebsite: popularwebsiteLists[index].title!);
+                        homecontroller
+                            .getHomeData(
+                                newswebsite: popularwebsiteLists[index].title!,
+                                fromdate: DateTime(
+                                        homecontroller.dateNow.year,
+                                        homecontroller.dateNow.month - 1,
+                                        homecontroller.dateNow.day)
+                                    .toString()
+                                    .split(' ')[0],
+                                todate: homecontroller.dateNow)
+                            .toString()
+                            .split(' ')[0];
                       }
                     },
                     child: Container(
@@ -398,5 +416,56 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  paginationwithcontroller(String newList) {
+    return _controller2.addListener(() {
+      if (_controller2.position.pixels ==
+          _controller2.position.maxScrollExtent) {
+        printer("reached end");
+        page++;
+        if (page <= 5) {
+          if (popularwebsiteLists[
+                      context.read<HomeController>().popularItemIndex!]
+                  .title ==
+              'All') {
+            context
+                .read<HomeController>()
+                .getMoreTask(
+                    newswebsite: newList,
+                    pagees: page,
+                    fromdate: DateTime(
+                            context.read<HomeController>().dateNow.year,
+                            context.read<HomeController>().dateNow.month - 1,
+                            context.read<HomeController>().dateNow.day)
+                        .toString()
+                        .split(' ')[0],
+                    todate: context.read<HomeController>().dateNow)
+                .toString()
+                .split(' ')[0];
+          } else {
+            context
+                .read<HomeController>()
+                .getMoreTask(
+                    pagees: page,
+                    newswebsite: popularwebsiteLists[
+                            context.read<HomeController>().popularItemIndex!]
+                        .title!,
+                    fromdate: DateTime(
+                            context.read<HomeController>().dateNow.year,
+                            context.read<HomeController>().dateNow.month - 1,
+                            context.read<HomeController>().dateNow.day)
+                        .toString()
+                        .split(' ')[0],
+                    todate: context.read<HomeController>().dateNow)
+                .toString()
+                .split(' ')[0];
+          }
+          // context
+          //     .read<HomeController>()
+          //     .getMoreTask(newswebsite: newList, pagees: page);
+        }
+      }
+    });
   }
 }

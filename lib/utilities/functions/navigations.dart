@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 GlobalKey<NavigatorState>? navKey = GlobalKey();
 
-void push({required Widget screen}) {
+void push({required Widget screen, required context}) {
   Navigator.push(
-    navKey!.currentContext!,
+    context,
     MaterialPageRoute(
       builder: (context) => screen,
     ),

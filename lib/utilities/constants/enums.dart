@@ -1,1 +1,1 @@
-enum DataState { initial, loading, empty, loaded, error }
+enum DataState { initial, loading, empty, loaded, error, isMoreDatAvailable }

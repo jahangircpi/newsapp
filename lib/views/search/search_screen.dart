@@ -13,6 +13,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerForSearcing = TextEditingController();
+    ScrollController scrollController = ScrollController();
     return Scaffold(
       body: SafeArea(
         child: Consumer<SearchController>(
@@ -108,8 +109,8 @@ class SearchScreen extends StatelessWidget {
                 Expanded(
                   child: containerwhite(
                       dataStateEnum: searchcontroller.searchDataState,
-                      controller: searchcontroller,
-                      listName: searchcontroller.searchDataLists),
+                      listName: searchcontroller.searchDataLists.articles,
+                      listController: scrollController),
                 )
               ],
             );

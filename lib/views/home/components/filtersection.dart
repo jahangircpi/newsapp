@@ -43,11 +43,6 @@ class FilterSection extends StatelessWidget {
                     value: homecontroller.selectNewsPaper,
                     items: popularwebsiteLists.map((e) {
                       return DropdownMenuItem<String>(
-                        // onTap: () {
-                        //   homecontroller.updateNewsPaper(
-                        //     newspaper: e.title!,
-                        //   );
-                        // },
                         value: e.title!,
                         child: Text(
                           e.webSite!.toString().toUpperCase(),
