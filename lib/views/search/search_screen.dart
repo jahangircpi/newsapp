@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
+import 'package:newsapp/utilities/widgets/snack_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../utilities/constants/themes.dart';
@@ -74,21 +75,7 @@ class SearchScreen extends StatelessWidget {
                 searchcontroller!
                     .getSearchData(searchTexts: controllerForSearcing.text);
               } else {
-                ScaffoldMessenger.of(context!).showSnackBar(
-                  SnackBar(
-                    content: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: UdDesign.pt(50),
-                      ),
-                      child: const Text('Search box is empty'),
-                    ),
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                  ),
-                );
+                snackBarProject(context: context, title: 'Search Box is Empty');
               }
             },
             child: Container(
