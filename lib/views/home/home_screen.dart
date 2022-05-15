@@ -96,7 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     dataStateEnum: homecontroller.homeDataState,
                     listController: _controller2,
                     listName: homecontroller.articlesLists!,
-                    onTap: () {},
+                    onTap: () {
+                      printer(homecontroller.articlesLists![0].url!);
+                    },
                   ),
                 ),
                 homecontroller.homeDataState == DataState.isMoreDatAvailable

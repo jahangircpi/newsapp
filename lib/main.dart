@@ -6,7 +6,6 @@ import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/views/root.dart';
 import 'package:provider/provider.dart';
-
 import 'controllers/favorite_controller.dart';
 
 void main() {

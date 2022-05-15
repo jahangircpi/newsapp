@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/utilities/constants/assets.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/views/saved_news/saved_news.dart';
 import 'package:newsapp/views/search/search_screen.dart';
 import 'package:ud_design/ud_design.dart';
 import 'home/home_screen.dart';
@@ -14,7 +15,7 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   getBody(current) {
     switch (current) {
@@ -31,6 +32,10 @@ class _RootScreenState extends State<RootScreen> {
       case 2:
         {
           return const SearchScreen();
+        }
+      case 3:
+        {
+          return const SavedNewsScreen();
         }
     }
   }
@@ -78,6 +83,12 @@ class _RootScreenState extends State<RootScreen> {
                       icon: Passets.searchIcon,
                       titleText: "Search",
                       currentIndex: 2),
+                  label: ''),
+              BottomNavigationBarItem(
+                  icon: iconwithdesignmethod(
+                      icon: Passets.saveIcon,
+                      titleText: "Saved",
+                      currentIndex: 3),
                   label: ''),
             ],
           ),

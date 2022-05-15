@@ -2,14 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/constants/themes.dart';
+import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/world/details_categories_screens.dart';
 import 'package:newsapp/models/global_countries.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../controllers/favorite_controller.dart';
 import '../../controllers/world_controller.dart';
+import '../../models/home_page_news_model.dart';
 import '../../utilities/functions/gap.dart';
+import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/search_bar.dart';
 
 class WorldScreen extends StatefulWidget {
@@ -27,6 +31,11 @@ class _WorldScreenState extends State<WorldScreen> {
   void initState() {
     super.initState();
     countriesnames = fullCountriesName;
+    callBack(() async {
+      await StorageManager.readData('savedlists').then((value) {
+        context.read<FavoriteController>().saveArticle = Article.decode(value);
+      });
+    });
     setState(() {});
   }
 

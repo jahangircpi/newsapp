@@ -3,13 +3,10 @@ import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/models/home_page_news_model.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/views/saved_news/components/alldata.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
-
-import '../../utilities/services/sharedpreference_service.dart';
 
 class SavedNewsScreen extends StatefulWidget {
   const SavedNewsScreen({Key? key}) : super(key: key);
@@ -24,19 +21,15 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
   @override
   void initState() {
     super.initState();
-
     callBack(() async {
-      await StorageManager.readData('savedlists').then((value) {
-        printer(value);
-        context.read<FavoriteController>().saveArticle = Article.decode(value);
-        searchArticleLists = context.read<FavoriteController>().saveArticle;
-      });
+      searchArticleLists = context.read<FavoriteController>().saveArticle;
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    UdDesign.init(context);
     return Scaffold(
       body: SafeArea(
         child: Consumer<FavoriteController>(
@@ -56,7 +49,9 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
                       setState(() {});
                     }),
                 Expanded(
-                  child: AllSavedDataLists(listName: searchArticleLists),
+                  child: AllSavedDataLists(
+                      listName: searchArticleLists,
+                      favoritecontroller: favoritecontroller),
                 )
               ],
             );

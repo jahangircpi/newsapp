@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
 import '../constants/colors.dart';
 import '../constants/enums.dart';
@@ -41,13 +43,7 @@ containerwhite({
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: UdDesign.pt(4)),
                     child: InkWell(
-                      onTap: () {
-                        // if (SavedController()
-                        //         .addingtoLists(title: listName.title) ==
-                        //     true) {
-                        //   printer(true);
-                        // }
-                      },
+                      onTap: onTap,
                       child: Container(
                         decoration: BoxDecoration(
                           color: PColors.containerColor,
@@ -114,6 +110,14 @@ containerwhite({
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Share.share(lists.url);
+                                            printer(lists.url);
+                                          },
+                                          child: const Icon(Icons.share),
+                                        ),
+                                        gapX(10),
                                         Consumer<FavoriteController>(
                                           builder: ((context,
                                               favoritecontroller, child) {
@@ -137,6 +141,7 @@ containerwhite({
                                             );
                                           }),
                                         ),
+                                        gapX(10),
                                       ],
                                     )
                                   ],

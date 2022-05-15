@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/world_controller.dart';
-import 'package:newsapp/utilities/constants/themes.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/print.dart';
@@ -29,7 +28,7 @@ class _DetailsglobalState extends State<Detailsglobal> {
   @override
   void initState() {
     super.initState();
-  
+
     callBack(() async {
       await context.read<WorldController>().getCategoryData(
           countryname: widget.country, categoryName: "business");
@@ -151,17 +150,13 @@ class _DetailsglobalState extends State<Detailsglobal> {
                   ),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: PThemes.padding, right: PThemes.padding),
-                    child: containerwhite(
-                        dataStateEnum: worldcontroller.worldDataState,
-                        listName: worldcontroller.worldnewsLists,
-                        onTap: () {
-                          printer(worldcontroller.worldnewsLists!.length);
-                        },
-                        listController: scrollercontroller),
-                  ),
+                  child: containerwhite(
+                      dataStateEnum: worldcontroller.worldDataState,
+                      listName: worldcontroller.worldnewsLists,
+                      onTap: () {
+                        printer(worldcontroller.worldnewsLists!.length);
+                      },
+                      listController: scrollercontroller),
                 ),
                 worldcontroller.worldDataState == DataState.isMoreDatAvailable
                     ? const CircularProgressIndicator()
