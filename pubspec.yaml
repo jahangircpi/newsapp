@@ -18,6 +18,9 @@ dependencies:
   ud_design: ^0.0.9
   shared_preferences: ^2.0.15
   share_plus: ^4.0.4
+  # flutter_webview_plugin: ^0.4.0
+  flutter_inappwebview: ^5.4.3+7
+
 
 
 dev_dependencies:
@@ -33,7 +36,6 @@ flutter:
 
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - images/
     # - images/a_dot_ham.jpeg

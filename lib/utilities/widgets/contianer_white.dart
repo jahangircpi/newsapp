@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
+import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../views/webview_screen.dart';
 import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../functions/gap.dart';
@@ -43,7 +45,11 @@ containerwhite({
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: UdDesign.pt(4)),
                     child: InkWell(
-                      onTap: onTap,
+                      onTap: () {
+                        push(
+                            screen: InAppWebViewPage(website: lists.url),
+                            context: context);
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: PColors.containerColor,

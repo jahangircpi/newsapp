@@ -18,12 +18,13 @@ class SearchController extends ChangeNotifier {
 
   getSearchData({required searchTexts}) async {
     searchDataState = DataState.loading;
+    notifyListeners();
     try {
-      Response categorydata = await getHttp(
+      Response searchdatas = await getHttp(
         path: Urls.search(searchText: searchTexts),
       );
-      if (categorydata.statusCode == 200) {
-        searchDataLists = HomePageNewsModel.fromJson(categorydata.data);
+      if (searchdatas.statusCode == 200) {
+        searchDataLists = HomePageNewsModel.fromJson(searchdatas.data);
         searchDataState = DataState.loaded;
       }
     } catch (e) {
