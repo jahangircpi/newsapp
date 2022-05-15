@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/models/home_page_news_model.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
+import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/views/saved_news/components/alldata.dart';
@@ -37,17 +38,24 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
             return Column(
               children: [
                 appBar(context),
-                searchField(
-                    hintText: 'Search',
-                    onChanged: (v) {
-                      searchArticleLists = favoritecontroller.saveArticle
-                          .where((element) => element.title!
-                              .toString()
-                              .toLowerCase()
-                              .contains(v))
-                          .toList();
-                      setState(() {});
-                    }),
+                gapY(8),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: UdDesign.pt(4),
+                  ),
+                  child: searchField(
+                      hintText: 'Search',
+                      onChanged: (v) {
+                        searchArticleLists = favoritecontroller.saveArticle
+                            .where((element) => element.title!
+                                .toString()
+                                .toLowerCase()
+                                .contains(v))
+                            .toList();
+                        setState(() {});
+                      }),
+                ),
+                gapY(8),
                 Expanded(
                   child: AllSavedDataLists(
                       listName: searchArticleLists,

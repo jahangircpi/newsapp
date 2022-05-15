@@ -121,7 +121,7 @@ class _RootScreenState extends State<RootScreen> {
                           Image.asset(
                             icon,
                             color: _currentIndex == currentIndex
-                                ? PColors.containerColor
+                                ? Colors.cyan
                                 : Colors.black,
                             height: UdDesign.pt(25),
                           ),
