@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
 
-networkImagescall({required src, dynamic color, textofnoimage}) {
+networkImagescall({required src, textofnoimage}) {
   return Image.network(
     src,
     fit: BoxFit.cover,
-    color: color,
     loadingBuilder:
         (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
       if (loadingProgress == null) return child;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../utilities/constants/themes.dart';
@@ -25,8 +26,11 @@ class SearchScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: UdDesign.pt(8),
                   ),
-                  child: searchbar(
-                      controllerForSearcing, searchcontroller, context),
+                  child: searchSection(
+                      controllerForSearcing: controllerForSearcing,
+                      searchcontroller: searchcontroller,
+                      context: context,
+                      hinttext: 'Search Anything'),
                 ),
                 gapY(4),
                 Expanded(
@@ -43,33 +47,20 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Row searchbar(TextEditingController controllerForSearcing,
-      SearchController searchcontroller, BuildContext context) {
+  Row searchSection(
+      {TextEditingController? controllerForSearcing,
+      SearchController? searchcontroller,
+      BuildContext? context,
+      onChanged,
+      hinttext}) {
     return Row(
       children: [
         Expanded(
-          flex: 4,
-          child: TextField(
-            controller: controllerForSearcing,
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                fillColor: Colors.white,
-                filled: true,
-                border: InputBorder.none,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: PColors.backgrounColor, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: PColors.backgrounColor, width: 1.0),
-                ),
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Search anything'),
-          ),
-        ),
+            flex: 4,
+            child: searchField(
+                controller: controllerForSearcing,
+                onChanged: onChanged,
+                hintText: hinttext)),
         const Expanded(
           flex: 0,
           child: SizedBox(),
@@ -79,11 +70,11 @@ class SearchScreen extends StatelessWidget {
           flex: 0,
           child: InkWell(
             onTap: () {
-              if (controllerForSearcing.text.isNotEmpty) {
-                searchcontroller.getSearchData(
-                    searchTexts: controllerForSearcing.text);
+              if (controllerForSearcing!.text.isNotEmpty) {
+                searchcontroller!
+                    .getSearchData(searchTexts: controllerForSearcing.text);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
+                ScaffoldMessenger.of(context!).showSnackBar(
                   SnackBar(
                     content: Padding(
                       padding: EdgeInsets.symmetric(
@@ -117,57 +108,6 @@ class SearchScreen extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row searchBar({searchcontroller, textController}) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 4,
-          child: TextField(
-            controller: textController,
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                fillColor: Colors.white,
-                filled: true,
-                border: InputBorder.none,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: PColors.backgrounColor, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: PColors.backgrounColor, width: 1.0),
-                ),
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Search here'),
-          ),
-        ),
-        const Expanded(
-          flex: 0,
-          child: SizedBox(),
-        ),
-        gapX(10),
-        Expanded(
-          flex: 0,
-          child: InkWell(
-            onTap: () {
-              searchcontroller.getSearchData(searchTexts: textController.text);
-            },
-            child: const Text(
-              'Search',
-              style: TextStyle(
-                color: PColors.containerColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 15,
               ),
             ),
           ),

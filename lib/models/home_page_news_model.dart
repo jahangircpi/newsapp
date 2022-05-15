@@ -74,6 +74,28 @@ class Article {
         "publishedAt": publishedAt!.toIso8601String(),
         "content": content,
       };
+  static Map<String, dynamic> toMap(Article articleslists) => {
+        'source': articleslists.source,
+        'author': articleslists.author,
+        'title': articleslists.title,
+        'description': articleslists.description,
+        "url": articleslists.url,
+        'urlToImage': articleslists.urlToImage,
+        "publishedAt": articleslists.publishedAt!.toIso8601String(),
+        "content": articleslists.content,
+      };
+
+  static String encode(List<Article> articleslists) => json.encode(
+        articleslists
+            .map<Map<String, dynamic>>(
+                (articleslists) => Article.toMap(articleslists))
+            .toList(),
+      );
+
+  static List<Article> decode(String articleslists) =>
+      (json.decode(articleslists) as List<dynamic>)
+          .map<Article>((item) => Article.fromJson(item))
+          .toList();
 }
 
 class Source {
@@ -94,4 +116,20 @@ class Source {
         "id": id,
         "name": name,
       };
+  static Map<String, dynamic> toMap(Source sourcelists) => {
+        'id': sourcelists.id,
+        'name': sourcelists.id,
+      };
+
+  static String encode(List<Source> articleslists) => json.encode(
+        articleslists
+            .map<Map<String, dynamic>>(
+                (articleslists) => Source.toMap(articleslists))
+            .toList(),
+      );
+
+  static List<Source> decode(String articleslists) =>
+      (json.decode(articleslists) as List<dynamic>)
+          .map<Source>((item) => Source.fromJson(item))
+          .toList();
 }

@@ -11,6 +11,9 @@ import 'controllers/favorite_controller.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<FavoriteController>(
+      create: (_) => FavoriteController(),
+    ),
     ChangeNotifierProvider<HomeController>(
       create: (_) => HomeController(),
     ),
@@ -19,9 +22,6 @@ void main() {
     ),
     ChangeNotifierProvider<SearchController>(
       create: (_) => SearchController(),
-    ),
-    ChangeNotifierProvider<FavoriteController>(
-      create: (_) => FavoriteController(),
     ),
   ], child: const MyApp()));
 }

@@ -126,7 +126,7 @@ containerwhite({
                                               child: Icon(
                                                 Icons.favorite,
                                                 color: favoritecontroller
-                                                        .saveArticle!
+                                                        .saveArticle
                                                         .indexWhere((element) =>
                                                             element.title ==
                                                             lists.title)
