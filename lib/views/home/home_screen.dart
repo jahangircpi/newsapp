@@ -19,6 +19,7 @@ import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/contianer_white.dart';
 import 'components/apikeyslists.dart';
 import 'components/settings_section.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final ScrollController _controller = ScrollController();
+  // late final ScrollController _controller = ScrollController();
   late final ScrollController _controller2 = ScrollController();
   @override
   void initState() {
@@ -90,6 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 topbarCategory(homecontroller),
+                // slidinglistview(size),
+
                 slidinglistview(size),
                 Expanded(
                   child: containerwhite(
@@ -200,90 +203,74 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? Stack(
                         children: [
                           SizedBox(
-                            height: UdDesign.pt(160),
                             width: size.width,
-                            child: NotificationListener(
-                              onNotification: ((notification) {
-                                setState(() {
-                                  searchcontroller.homeImageIndex =
-                                      (_controller.offset / size.width)
-                                              .round() +
-                                          0;
-                                });
-                                return true;
-                              }),
-                              child: ListView.builder(
-                                controller: _controller,
-                                shrinkWrap: true,
+                            child: CarouselSlider(
+                              options: CarouselOptions(
+                                height: UdDesign.pt(160),
+                                aspectRatio: 16 / 9,
+                                viewportFraction: 1,
+                                initialPage: 0,
+                                enableInfiniteScroll: true,
+                                reverse: false,
+                                autoPlay: true,
+                                autoPlayInterval: const Duration(seconds: 10),
+                                autoPlayAnimationDuration:
+                                    const Duration(milliseconds: 800),
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                enlargeCenterPage: true,
+                                onPageChanged: (value, _) {
+                                  searchcontroller.getHomeIndex(
+                                      givenIndex: value);
+                                },
                                 scrollDirection: Axis.horizontal,
-                                itemCount: searchcontroller
-                                    .searchDataLists.articles!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Stack(
-                                    children: [
-                                      SizedBox(
-                                        width: size.width,
-                                        child: InkWell(
-                                          onTap: () {
-                                            printer(searchcontroller
-                                                .homeImageIndex);
-                                          },
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: UdDesign.pt(4),
-                                            ),
-                                            child: networkImagescall(
-                                                src: searchcontroller
-                                                    .searchDataLists
-                                                    .articles![index]
-                                                    .urlToImage!,
-                                                textofnoimage: Colors.white),
-                                          ),
+                              ),
+                              items: searchcontroller.searchDataLists.articles!
+                                  .map((e) {
+                                return Stack(
+                                  children: [
+                                    SizedBox(
+                                      width: size.width,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: UdDesign.pt(4),
                                         ),
+                                        child: networkImagescall(
+                                            src: e.urlToImage!,
+                                            textofnoimage: Colors.white),
                                       ),
-                                      Positioned(
-                                        bottom: UdDesign.pt(15),
-                                        left: 0,
-                                        child: SingleChildScrollView(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          child: SizedBox(
-                                            height: UdDesign.pt(180),
-                                            width: size.width,
-                                            child: Align(
-                                              alignment: Alignment.bottomCenter,
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: UdDesign.pt(8),
-                                                ),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    printer(searchcontroller
-                                                        .homeImageIndex);
-                                                  },
-                                                  child: Text(
-                                                    searchcontroller
-                                                        .searchDataLists
-                                                        .articles![index]
-                                                        .title!,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize:
-                                                          UdDesign.fontSize(20),
-                                                    ),
-                                                  ),
+                                    ),
+                                    Positioned(
+                                      bottom: UdDesign.pt(15),
+                                      left: 0,
+                                      child: SingleChildScrollView(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        child: SizedBox(
+                                          height: UdDesign.pt(180),
+                                          width: size.width,
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: UdDesign.pt(8),
+                                              ),
+                                              child: Text(
+                                                e.title!,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      UdDesign.fontSize(20),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  );
-                                },
-                              ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
                             ),
                           ),
                           Positioned(

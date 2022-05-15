@@ -5,6 +5,7 @@ import 'package:newsapp/utilities/constants/themes.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/functions/print.dart';
+import 'package:newsapp/views/responsive_view.dart';
 import 'package:newsapp/views/world/details_categories_screens.dart';
 import 'package:newsapp/models/global_countries.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,7 @@ class _WorldScreenState extends State<WorldScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -49,14 +51,22 @@ class _WorldScreenState extends State<WorldScreen> {
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: PThemes.padding,
+              horizontal: Responsive.isDesktop(context)
+                  ? PThemes.desktopPadding
+                  : PThemes.padding,
             ),
             child: Column(
               children: [
                 gapY(PThemes.padding),
                 Expanded(
                   flex: 0,
-                  child: searchSection(),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Responsive.isDesktop(context)
+                            ? size.width * 0.3
+                            : 0),
+                    child: searchSection(),
+                  ),
                 ),
                 gapY(10),
                 Expanded(
@@ -74,7 +84,7 @@ class _WorldScreenState extends State<WorldScreen> {
     return GridView.builder(
       itemCount: countriesnames!.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: Responsive.isDesktop(context) ? 6 : 2,
         mainAxisSpacing: UdDesign.pt(7),
         childAspectRatio: 2,
         crossAxisSpacing: UdDesign.pt(7),

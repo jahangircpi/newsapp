@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
@@ -87,7 +89,10 @@ containerwhite({
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            color: Colors.red,
+                                            // color: Colors.red,
+                                            color: Colors.primaries[Random()
+                                                .nextInt(
+                                                    Colors.primaries.length)],
                                             child: Padding(
                                               padding: EdgeInsets.symmetric(
                                                 horizontal: UdDesign.pt(8),

@@ -8,18 +8,19 @@ List<PopularWebsiteModel> popularwebsiteLists = [
   PopularWebsiteModel(id: 5, title: "dw.com", webSite: "DW News"),
   PopularWebsiteModel(
       id: 6, title: "theguardian.com", webSite: "Guardian Newspaper"),
+  PopularWebsiteModel(id: 7, title: "reuters.com", webSite: "Reuters"),
   PopularWebsiteModel(
-      id: 7, title: "newscientist.com", webSite: "The New Scientist"),
+      id: 8, title: "newscientist.com", webSite: "The New Scientist"),
   PopularWebsiteModel(
-      id: 8, title: "wsj.com", webSite: "The Wall Street Journal"),
-  PopularWebsiteModel(id: 8, title: "usatoday.com", webSite: "USA Today"),
+      id: 9, title: "wsj.com", webSite: "The Wall Street Journal"),
+  PopularWebsiteModel(id: 10, title: "usatoday.com", webSite: "USA Today"),
   PopularWebsiteModel(
-      id: 10, title: "nytimes.com", webSite: "The New York Times"),
+      id: 11, title: "nytimes.com", webSite: "The New York Times"),
   PopularWebsiteModel(
-      id: 11, title: "indiatimes.com", webSite: "The Times of India"),
-  PopularWebsiteModel(id: 12, title: "dailymail.co.uk", webSite: "Daily Mail"),
-  PopularWebsiteModel(id: 13, title: "economist.com", webSite: "Economist"),
-  PopularWebsiteModel(id: 14, title: "techcrunch.com", webSite: "Techcrunch"),
-  PopularWebsiteModel(id: 15, title: "thenextweb.com", webSite: 'The Next Web'),
-  PopularWebsiteModel(id: 16, title: "engadget.com", webSite: "Engadget"),
+      id: 12, title: "indiatimes.com", webSite: "The Times of India"),
+  PopularWebsiteModel(id: 13, title: "dailymail.co.uk", webSite: "Daily Mail"),
+  PopularWebsiteModel(id: 14, title: "economist.com", webSite: "Economist"),
+  PopularWebsiteModel(id: 15, title: "techcrunch.com", webSite: "Techcrunch"),
+  PopularWebsiteModel(id: 16, title: "thenextweb.com", webSite: 'The Next Web'),
+  PopularWebsiteModel(id: 17, title: "engadget.com", webSite: "Engadget"),
 ];

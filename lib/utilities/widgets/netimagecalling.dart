@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/colors.dart';
-
 networkImagescall({required src, textofnoimage}) {
   return Image.network(
     src,
@@ -15,18 +13,11 @@ networkImagescall({required src, textofnoimage}) {
               ? loadingProgress.cumulativeBytesLoaded /
                   loadingProgress.expectedTotalBytes!
               : null,
-          color: PColors.backgrounColor,
-          backgroundColor: Colors.red,
         ),
       );
     },
     errorBuilder: (context, exception, stackTrace) {
-      return Center(
-        child: Text(
-          'No image found...',
-          style: TextStyle(color: textofnoimage ?? Colors.black),
-        ),
-      );
+      return const Center(child: Text('No image found...'));
     },
   );
 }
