@@ -38,9 +38,9 @@ class SearchScreen extends StatelessWidget {
                 gapY(4),
                 Expanded(
                   child: containerwhite(
-                      dataStateEnum: searchcontroller.searchDataState,
-                      listName: searchcontroller.searchDataLists.articles,
-                      onTap: () {}),
+                    dataStateEnum: searchcontroller.searchDataState,
+                    listName: searchcontroller.searchDataLists.articles,
+                  ),
                 )
               ],
             );

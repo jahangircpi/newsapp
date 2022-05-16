@@ -17,7 +17,6 @@ containerwhite({
   required dataStateEnum,
   listName,
   listController,
-  onTap,
 }) {
   return Padding(
     padding: EdgeInsets.symmetric(

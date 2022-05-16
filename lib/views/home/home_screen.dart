@@ -71,12 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller2.addListener(() {
       double maxScroll = _controller2.position.minScrollExtent;
       double currentScroll = _controller2.position.pixels;
-      double delta = 100.0; // or something else..
+      double delta = UdDesign.pt(100);
       if (maxScroll + currentScroll <= delta) {
         context.read<SearchController>().getTopBarShown(value: true);
-        // whatever you determine here
-        printer('it is hre ');
-        //.. load more
       } else {
         printer('nowhere');
         context.read<SearchController>().getTopBarShown(value: false);
@@ -117,9 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     dataStateEnum: homecontroller.homeDataState,
                     listController: _controller2,
                     listName: homecontroller.articlesLists!,
-                    onTap: () {
-                      printer(homecontroller.articlesLists![0].url!);
-                    },
                   ),
                 ),
                 homecontroller.homeDataState == DataState.isMoreDatAvailable
@@ -234,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     reverse: false,
                                     autoPlay: true,
                                     autoPlayInterval:
-                                        const Duration(seconds: 10),
+                                        const Duration(seconds: 5),
                                     autoPlayAnimationDuration:
                                         const Duration(milliseconds: 800),
                                     autoPlayCurve: Curves.fastOutSlowIn,
@@ -431,7 +425,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return _controller2.addListener(() {
       if (_controller2.position.pixels ==
           _controller2.position.maxScrollExtent) {
-        printer("reached end");
         page++;
         if (page <= 5) {
           if (popularwebsiteLists[

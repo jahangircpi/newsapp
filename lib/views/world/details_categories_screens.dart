@@ -153,9 +153,6 @@ class _DetailsglobalState extends State<Detailsglobal> {
                   child: containerwhite(
                       dataStateEnum: worldcontroller.worldDataState,
                       listName: worldcontroller.worldnewsLists,
-                      onTap: () {
-                        printer(worldcontroller.worldnewsLists!.length);
-                      },
                       listController: scrollercontroller),
                 ),
                 worldcontroller.worldDataState == DataState.isMoreDatAvailable
