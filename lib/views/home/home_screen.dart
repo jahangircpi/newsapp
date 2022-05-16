@@ -15,6 +15,8 @@ import 'package:newsapp/views/home/components/filtersection.dart';
 import 'package:newsapp/views/home/components/start_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../controllers/favorite_controller.dart';
+import '../../models/home_page_news_model.dart';
 import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/contianer_white.dart';
 import 'components/apikeyslists.dart';
@@ -29,7 +31,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // late final ScrollController _controller = ScrollController();
   late final ScrollController _controller2 = ScrollController();
   @override
   void initState() {
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       context.read<HomeController>().apikey = value;
     }).then(((value) {
-      callBack(() {
+      callBack(() async {
         if (context.read<HomeController>().homeDataState != DataState.loaded) {
           context.read<HomeController>().getHomeData(newswebsite: newList);
         }
@@ -59,10 +60,28 @@ class _HomeScreenState extends State<HomeScreen> {
               .read<SearchController>()
               .getSearchData(searchTexts: 'Flutter');
         }
+        await StorageManager.readData('savedlists').then((value) {
+          context.read<FavoriteController>().saveArticle =
+              Article.decode(value);
+        });
       });
     }));
 
     paginationwithcontroller(newList);
+    _controller2.addListener(() {
+      double maxScroll = _controller2.position.minScrollExtent;
+      double currentScroll = _controller2.position.pixels;
+      double delta = 100.0; // or something else..
+      if (maxScroll + currentScroll <= delta) {
+        context.read<SearchController>().getTopBarShown(value: true);
+        // whatever you determine here
+        printer('it is hre ');
+        //.. load more
+      } else {
+        printer('nowhere');
+        context.read<SearchController>().getTopBarShown(value: false);
+      }
+    });
   }
 
   int page = 1;
@@ -71,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      key: globalKey,
       drawer: const StartDrawer(),
       body: SafeArea(
         child: Consumer<HomeController>(
@@ -91,8 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 topbarCategory(homecontroller),
-                // slidinglistview(size),
-
                 slidinglistview(size),
                 Expanded(
                   child: containerwhite(
@@ -200,109 +218,117 @@ class _HomeScreenState extends State<HomeScreen> {
             : searchcontroller.searchDataState == DataState.loading
                 ? const Text("Data is loading")
                 : searchcontroller.searchDataState == DataState.loaded
-                    ? Stack(
-                        children: [
-                          SizedBox(
-                            width: size.width,
-                            child: CarouselSlider(
-                              options: CarouselOptions(
-                                height: UdDesign.pt(160),
-                                aspectRatio: 16 / 9,
-                                viewportFraction: 1,
-                                initialPage: 0,
-                                enableInfiniteScroll: true,
-                                reverse: false,
-                                autoPlay: true,
-                                autoPlayInterval: const Duration(seconds: 10),
-                                autoPlayAnimationDuration:
-                                    const Duration(milliseconds: 800),
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                enlargeCenterPage: true,
-                                onPageChanged: (value, _) {
-                                  searchcontroller.getHomeIndex(
-                                      givenIndex: value);
-                                },
-                                scrollDirection: Axis.horizontal,
-                              ),
-                              items: searchcontroller.searchDataLists.articles!
-                                  .map((e) {
-                                return Stack(
-                                  children: [
-                                    SizedBox(
-                                      width: size.width,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: UdDesign.pt(4),
-                                        ),
-                                        child: networkImagescall(
-                                            src: e.urlToImage!,
-                                            textofnoimage: Colors.white),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: UdDesign.pt(15),
-                                      left: 0,
-                                      child: SingleChildScrollView(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        child: SizedBox(
-                                          height: UdDesign.pt(180),
+                    ? searchcontroller.isTopBarShown == false
+                        ? const SizedBox()
+                        : Stack(
+                            children: [
+                              SizedBox(
+                                width: size.width,
+                                child: CarouselSlider(
+                                  options: CarouselOptions(
+                                    height: UdDesign.pt(160),
+                                    aspectRatio: 16 / 9,
+                                    viewportFraction: 1,
+                                    initialPage: 0,
+                                    enableInfiniteScroll: true,
+                                    reverse: false,
+                                    autoPlay: true,
+                                    autoPlayInterval:
+                                        const Duration(seconds: 10),
+                                    autoPlayAnimationDuration:
+                                        const Duration(milliseconds: 800),
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    enlargeCenterPage: true,
+                                    onPageChanged: (value, _) {
+                                      searchcontroller.getHomeIndex(
+                                          givenIndex: value);
+                                    },
+                                    scrollDirection: Axis.horizontal,
+                                  ),
+                                  items: searchcontroller
+                                      .searchDataLists.articles!
+                                      .map((e) {
+                                    return Stack(
+                                      children: [
+                                        SizedBox(
                                           width: size.width,
-                                          child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: UdDesign.pt(8),
-                                              ),
-                                              child: Text(
-                                                e.title!,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize:
-                                                      UdDesign.fontSize(20),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: UdDesign.pt(4),
+                                            ),
+                                            child: networkImagescall(
+                                                src: e.urlToImage!,
+                                                textofnoimage: Colors.white),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: UdDesign.pt(15),
+                                          left: 0,
+                                          child: SingleChildScrollView(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            child: SizedBox(
+                                              height: UdDesign.pt(180),
+                                              width: size.width,
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: UdDesign.pt(8),
+                                                  ),
+                                                  child: Text(
+                                                    e.title!,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize:
+                                                          UdDesign.fontSize(20),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: UdDesign.pt(4),
+                                left: size.width * 0.4,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                      searchcontroller.searchDataLists.articles!
+                                          .length, (index) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color:
+                                            searchcontroller.homeImageIndex ==
+                                                    index
+                                                ? const Color(0xFFFFFFFF)
+                                                : Colors.white.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(
+                                            searchcontroller.homeImageIndex ==
+                                                    index
+                                                ? UdDesign.pt(2)
+                                                : 0),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: UdDesign.pt(4),
-                            left: size.width * 0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                  searchcontroller.searchDataLists.articles!
-                                      .length, (index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        searchcontroller.homeImageIndex == index
-                                            ? const Color(0xFFFFFFFF)
-                                            : Colors.white.withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(
-                                        searchcontroller.homeImageIndex == index
-                                            ? UdDesign.pt(2)
-                                            : 0),
-                                  ),
-                                  height: UdDesign.pt(8),
-                                  width:
-                                      searchcontroller.homeImageIndex == index
+                                      height: UdDesign.pt(8),
+                                      width: searchcontroller.homeImageIndex ==
+                                              index
                                           ? UdDesign.pt(10)
                                           : UdDesign.pt(2),
-                                );
-                              }),
-                            ),
-                          ),
-                        ],
-                      )
+                                    );
+                                  }),
+                                ),
+                              ),
+                            ],
+                          )
                     : const Center(
                         child: Text("Data has some problems to show"),
                       );

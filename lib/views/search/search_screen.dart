@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../utilities/constants/themes.dart';
 import '../../utilities/functions/gap.dart';
+import '../../utilities/functions/navigations.dart';
 import '../../utilities/widgets/contianer_white.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -17,6 +18,7 @@ class SearchScreen extends StatelessWidget {
     TextEditingController controllerForSearcing = TextEditingController();
 
     return Scaffold(
+      key: globalKey,
       body: SafeArea(
         child: Consumer<SearchController>(
           builder: ((context, searchcontroller, child) {

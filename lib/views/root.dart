@@ -15,7 +15,7 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   getBody(current) {
     switch (current) {

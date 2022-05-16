@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      key: navKey!,
+      key: navKey,
       title: 'NewsApp Demo',
       theme: ThemeData(
           primarySwatch: Colors.blue,

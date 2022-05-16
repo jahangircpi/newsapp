@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ud_design/ud_design.dart';
 
-snackBarProject({required context, String? title}) {
-  ScaffoldMessenger.of(context!).showSnackBar(
+snackBarProject({required context, String? title, backgroundColor}) {
+  ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Container(
-        height: UdDesign.pt(50),
+        height: UdDesign.pt(40),
         decoration: BoxDecoration(
-          color: const Color(0XFFC72C41),
+          color: backgroundColor ?? const Color(0XFFC72C41),
           borderRadius: BorderRadius.all(
-            Radius.circular(UdDesign.pt(10)),
+            Radius.circular(
+              UdDesign.pt(10),
+            ),
           ),
         ),
         child: Row(

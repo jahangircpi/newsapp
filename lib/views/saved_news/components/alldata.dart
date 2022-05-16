@@ -36,37 +36,37 @@ class AllSavedDataLists extends StatelessWidget {
                   horizontal: UdDesign.pt(4),
                   vertical: UdDesign.pt(4),
                 ),
-                child: InkWell(
-                  onTap: () {
-                    push(
-                        screen: InAppWebViewPage(website: lists.url!),
-                        context: context);
-                  },
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  color: Colors.primaries[Random()
-                                      .nextInt(Colors.primaries.length)],
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: UdDesign.pt(3),
-                                      vertical: UdDesign.pt(3),
-                                    ),
-                                    child: Text(
-                                      lists.source!.name!,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                color: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)],
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: UdDesign.pt(3),
+                                    vertical: UdDesign.pt(3),
+                                  ),
+                                  child: Text(
+                                    lists.source!.name!,
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                 ),
-                                gapY(4),
-                                Text(
+                              ),
+                              gapY(4),
+                              InkWell(
+                                onTap: () {
+                                  push(
+                                      screen:
+                                          InAppWebViewPage(website: lists.url!),
+                                      context: context);
+                                },
+                                child: Text(
                                   lists.title!,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -74,62 +74,64 @@ class AllSavedDataLists extends StatelessWidget {
                                     fontSize: UdDesign.fontSize(16),
                                   ),
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 0,
+                          child: SizedBox(
+                            width: size.width * 0.3,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: networkImagescall(src: lists.urlToImage!),
                             ),
                           ),
-                          Expanded(
-                            flex: 0,
-                            child: SizedBox(
-                              width: size.width * 0.3,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child:
-                                    networkImagescall(src: lists.urlToImage!),
-                              ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: UdDesign.pt(15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Share.share(lists.url!);
+                              printer(lists.url!);
+                            },
+                            child: Icon(
+                              Icons.share,
+                              color: Colors.white,
+                              size: UdDesign.pt(24),
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: UdDesign.pt(15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Share.share(lists.url!);
-                                printer(lists.url!);
-                              },
+                          ),
+                          gapX(10),
+                          InkWell(
+                            onTap: () {
+                              printer('shello');
+                              favoritecontroller!
+                                  .deletefromthelist(newsItem: lists);
+                            },
+                            child: Align(
+                              alignment: Alignment.centerRight,
                               child: Icon(
-                                Icons.share,
-                                color: Colors.white,
+                                Icons.delete_outline,
+                                color: Colors.red,
                                 size: UdDesign.pt(24),
                               ),
                             ),
-                            gapX(10),
-                            InkWell(
-                              onTap: () {
-                                favoritecontroller!
-                                    .addingtoLists(newsItem: lists);
-                              },
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Icon(
-                                  Icons.delete_outline,
-                                  color: Colors.red,
-                                  size: UdDesign.pt(24),
-                                ),
-                              ),
-                            ),
-                            gapX(10),
-                          ],
-                        ),
+                          ),
+                          gapX(10),
+                        ],
                       ),
-                      const Divider(
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
+                    ),
+                    gapY(10),
+                    const Divider(
+                      color: Colors.white,
+                    ),
+                    gapY(10),
+                  ],
                 ),
               );
             },

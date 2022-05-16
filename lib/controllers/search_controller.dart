@@ -10,6 +10,11 @@ class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
   DataState searchDataState = DataState.initial;
   int homeImageIndex = 0;
+  bool isTopBarShown = true;
+  getTopBarShown({value}) {
+    isTopBarShown = value;
+    notifyListeners();
+  }
 
   getHomeIndex({givenIndex}) {
     homeImageIndex = givenIndex;
