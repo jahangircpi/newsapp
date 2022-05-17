@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
-import 'package:newsapp/views/home/components/apikeyslists.dart';
+import 'package:newsapp/views/home/components/utilities/apikeyslists.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 
@@ -11,7 +11,7 @@ import '../../../utilities/constants/urls.dart';
 import '../../../utilities/functions/navigations.dart';
 import '../../../utilities/services/sharedpreference_service.dart';
 import '../../../utilities/widgets/top_sheet.dart';
-import 'allpopularnewswebsite.dart';
+import 'utilities/allpopularnewswebsite.dart';
 
 class SettingSection extends StatelessWidget {
   final HomeController? homecontroller;
@@ -36,11 +36,6 @@ class SettingSection extends StatelessWidget {
                       value: homecontroller!.apikey,
                       items: apikeyslists2.map((e) {
                         return DropdownMenuItem<String>(
-                          // onTap: () {
-                          //   homecontroller.updateNewsPaper(
-                          //     newspaper: e.title!,
-                          //   );
-                          // },
                           value: e.title!,
                           child: Text(
                             e.name!.toString().toUpperCase(),
@@ -80,10 +75,13 @@ class SettingSection extends StatelessWidget {
                         .getSearchData(searchTexts: 'Flutter');
                   },
                   child: Container(
-                    color: PColors.basicColor,
+                    decoration: BoxDecoration(
+                      color: PColors.basicColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: UdDesign.pt(12),
+                        horizontal: UdDesign.pt(24),
                         vertical: UdDesign.pt(12),
                       ),
                       child: const Text(

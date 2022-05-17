@@ -9,17 +9,6 @@ import '../utilities/services/dio_services.dart';
 class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
   DataState searchDataState = DataState.initial;
-  int homeImageIndex = 0;
-  bool isTopBarShown = true;
-  getTopBarShown({value}) {
-    isTopBarShown = value;
-    notifyListeners();
-  }
-
-  getHomeIndex({givenIndex}) {
-    homeImageIndex = givenIndex;
-    notifyListeners();
-  }
 
   getSearchData({required searchTexts}) async {
     searchDataState = DataState.loading;
@@ -38,4 +27,18 @@ class SearchController extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  int homeImageIndex = 0;
+  getHomeIndex({givenIndex}) {
+    homeImageIndex = givenIndex;
+    notifyListeners();
+  }
+
+  bool isTopBarShown = true;
+  getTopBarShown({value}) {
+    isTopBarShown = value;
+    notifyListeners();
+  }
+
+  TextEditingController? searchTextController = TextEditingController();
 }

@@ -8,7 +8,7 @@ import '../../../utilities/constants/colors.dart';
 import '../../../utilities/functions/gap.dart';
 import '../../../utilities/functions/navigations.dart';
 import '../../../utilities/functions/print.dart';
-import 'allpopularnewswebsite.dart';
+import 'utilities/allpopularnewswebsite.dart';
 
 class FilterSection extends StatelessWidget {
   final HomeController homecontroller;

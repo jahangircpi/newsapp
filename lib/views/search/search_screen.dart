@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/utilities/widgets/snack_bar.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,8 @@ import '../../utilities/widgets/contianer_white.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    TextEditingController controllerForSearcing = TextEditingController();
-
     return Scaffold(
       key: globalKey,
       body: SafeArea(
@@ -30,7 +28,8 @@ class SearchScreen extends StatelessWidget {
                     horizontal: UdDesign.pt(8),
                   ),
                   child: searchSection(
-                      controllerForSearcing: controllerForSearcing,
+                      controllerForSearcing:
+                          searchcontroller.searchTextController,
                       searchcontroller: searchcontroller,
                       context: context,
                       hinttext: 'Search Anything'),
@@ -50,7 +49,7 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Row searchSection(
+  Widget searchSection(
       {TextEditingController? controllerForSearcing,
       SearchController? searchcontroller,
       BuildContext? context,
@@ -73,9 +72,11 @@ class SearchScreen extends StatelessWidget {
           flex: 0,
           child: InkWell(
             onTap: () {
-              if (controllerForSearcing!.text.isNotEmpty) {
-                searchcontroller!
-                    .getSearchData(searchTexts: controllerForSearcing.text);
+              if (searchcontroller!.searchTextController!.text.isNotEmpty) {
+                searchcontroller.getSearchData(
+                    searchTexts: searchcontroller.searchTextController!.text);
+                StorageManager.saveData('searchhistory',
+                    searchcontroller.searchTextController!.text);
               } else {
                 snackBarProject(context: context, title: 'Search Box is Empty');
               }

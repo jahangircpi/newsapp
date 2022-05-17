@@ -25,8 +25,8 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
     super.initState();
     callBack(() async {
       searchArticleLists = context.read<FavoriteController>().saveArticle;
-      setState(() {});
     });
+    setState(() {});
   }
 
   @override
@@ -74,29 +74,14 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
     );
   }
 
-  Row appBar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        InkWell(
-          onTap: () {
-            pop(context: context);
-          },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        Text(
-          'Saved Articles',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: UdDesign.fontSize(20),
-          ),
-        ),
-        const SizedBox()
-      ],
+  appBar(BuildContext context) {
+    return Text(
+      'Saved Articles',
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: UdDesign.fontSize(20),
+      ),
     );
   }
 }

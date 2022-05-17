@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:newsapp/utilities/constants/enums.dart';
-import 'package:newsapp/views/home/components/apikeyslists.dart';
+import 'package:newsapp/views/home/components/utilities/apikeyslists.dart';
 import '../models/home_page_news_model.dart';
 import '../utilities/constants/urls.dart';
 import '../utilities/functions/print.dart';
 import '../utilities/services/dio_services.dart';
-import '../views/home/components/allpopularnewswebsite.dart';
+import '../views/home/components/utilities/allpopularnewswebsite.dart';
 
 class HomeController extends ChangeNotifier {
   HomePageNewsModel homedataLists = HomePageNewsModel();
