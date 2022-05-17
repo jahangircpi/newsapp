@@ -7,7 +7,7 @@ import 'package:newsapp/utilities/functions/print.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
-import '../../views/webview_screen.dart';
+import '../../inappviewscreen.dart';
 import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../functions/gap.dart';
@@ -108,7 +108,7 @@ containerwhite({
                                   InkWell(
                                     onTap: () {
                                       push(
-                                          screen: InAppWebViewPage(
+                                          screen: InAppWebViewExampleScreen(
                                               website: lists.url),
                                           context: context);
                                     },

@@ -1,14 +1,40 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/root.dart';
 import 'package:provider/provider.dart';
 import 'controllers/favorite_controller.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+
+    var swAvailable = await AndroidWebViewFeature.isFeatureSupported(
+        AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+    var swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(
+        AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+
+    if (swAvailable && swInterceptAvailable) {
+      AndroidServiceWorkerController serviceWorkerController =
+          AndroidServiceWorkerController.instance();
+
+      await serviceWorkerController
+          .setServiceWorkerClient(AndroidServiceWorkerClient(
+        shouldInterceptRequest: (request) async {
+          printer(request);
+          return null;
+        },
+      ));
+    }
+  }
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<FavoriteController>(
       create: (_) => FavoriteController(),

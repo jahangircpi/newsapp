@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/models/home_page_news_model.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/views/webview_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../../inappviewscreen.dart';
 import '../../../utilities/functions/gap.dart';
 import '../../../utilities/functions/print.dart';
 import '../../../utilities/widgets/netimagecalling.dart';
@@ -61,9 +61,9 @@ class AllSavedDataLists extends StatelessWidget {
                               InkWell(
                                 onTap: () {
                                   push(
-                                      screen:
-                                          InAppWebViewPage(website: lists.url!),
-                                      context: context);
+                                      context: context,
+                                      screen: InAppWebViewExampleScreen(
+                                          website: lists.url!));
                                 },
                                 child: Text(
                                   lists.title!,
