@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/models/home_page_news_model.dart';
 import 'package:newsapp/utilities/constants/themes.dart';
-import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
@@ -23,9 +22,7 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
   @override
   void initState() {
     super.initState();
-    callBack(() async {
-      searchArticleLists = context.read<FavoriteController>().saveArticle;
-    });
+    searchArticleLists = context.read<FavoriteController>().saveArticle;
     setState(() {});
   }
 

@@ -5,7 +5,7 @@ snackBarProject({required context, String? title, backgroundColor}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Container(
-        height: UdDesign.pt(40),
+        height: UdDesign.pt(60),
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0XFFC72C41),
           borderRadius: BorderRadius.all(
@@ -16,7 +16,9 @@ snackBarProject({required context, String? title, backgroundColor}) {
         ),
         child: Row(
           children: [
-            const SizedBox(width: 40),
+            SizedBox(
+              width: UdDesign.pt(40),
+            ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,7 +27,9 @@ snackBarProject({required context, String? title, backgroundColor}) {
                   const Text('Oh snap!'),
                   Text(
                     title!,
-                    style: TextStyle(fontSize: UdDesign.fontSize(15)),
+                    style: TextStyle(
+                      fontSize: UdDesign.fontSize(15),
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

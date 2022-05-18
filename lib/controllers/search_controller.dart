@@ -9,6 +9,7 @@ import '../utilities/services/dio_services.dart';
 class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
   DataState searchDataState = DataState.initial;
+  TextEditingController? searchTextController = TextEditingController();
 
   getSearchData({required searchTexts}) async {
     searchDataState = DataState.loading;
@@ -39,6 +40,4 @@ class SearchController extends ChangeNotifier {
     isTopBarShown = value;
     notifyListeners();
   }
-
-  TextEditingController? searchTextController = TextEditingController();
 }

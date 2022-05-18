@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:newsapp/utilities/constants/enums.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import '../models/home_page_news_model.dart';
 import '../utilities/constants/urls.dart';
 import '../utilities/services/dio_services.dart';
@@ -48,27 +49,9 @@ class WorldController extends ChangeNotifier {
       });
       worldDataState = DataState.loaded;
     } catch (e) {
+      printer(e);
       worldDataState = DataState.error;
     }
     notifyListeners();
   }
-  //   getMoreTask({required searchTexts, pagees}) async {
-  //   searchDataState = DataState.isMoreDatAvailable;
-  //   notifyListeners();
-  //   try {
-  //     await getHttp(
-  //       path: Urls.search(searchText: searchTexts, page: 1),
-  //     ).then((value) {
-  //       searchDataLists!.clear();
-  //       for (int i = 0; i < value.data['articles'].length; i++) {
-  //         searchDataLists!.add(Article.fromJson(value.data['articles'][i]));
-  //       }
-  //     });
-  //     searchDataState = DataState.loaded;
-  //   } catch (e) {
-  //     searchDataState = DataState.error;
-  //     printer(e);
-  //   }
-  //   notifyListeners();
-  // }
 }

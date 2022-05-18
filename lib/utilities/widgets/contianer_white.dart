@@ -1,9 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
@@ -82,7 +80,6 @@ containerwhite({
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          // color: Colors.red,
                                           color: Colors.primaries[Random()
                                               .nextInt(
                                                   Colors.primaries.length)],
@@ -108,7 +105,7 @@ containerwhite({
                                   InkWell(
                                     onTap: () {
                                       push(
-                                          screen: InAppWebViewExampleScreen(
+                                          screen: InAppWebViewScreen(
                                               website: lists.url),
                                           context: context);
                                     },
@@ -125,7 +122,6 @@ containerwhite({
                                       InkWell(
                                         onTap: () {
                                           Share.share(lists.url);
-                                          printer(lists.url);
                                         },
                                         child: const Icon(Icons.share),
                                       ),

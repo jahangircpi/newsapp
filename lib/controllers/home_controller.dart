@@ -94,8 +94,8 @@ class HomeController extends ChangeNotifier {
       });
       homeDataState = DataState.loaded;
     } catch (e) {
-      homeDataState = DataState.error;
       printer(e);
+      homeDataState = DataState.error;
     }
     notifyListeners();
   }

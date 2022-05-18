@@ -7,7 +7,6 @@ import 'package:ud_design/ud_design.dart';
 import '../../../utilities/constants/colors.dart';
 import '../../../utilities/functions/gap.dart';
 import '../../../utilities/functions/navigations.dart';
-import '../../../utilities/functions/print.dart';
 import 'utilities/allpopularnewswebsite.dart';
 
 class FilterSection extends StatelessWidget {
@@ -54,7 +53,6 @@ class FilterSection extends StatelessWidget {
                       homecontroller.updateNewsPaper(
                         newspaper: v,
                       );
-                      printer(v);
                     },
                   ),
                 ),

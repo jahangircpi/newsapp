@@ -12,7 +12,3 @@ Widget gapY(double value) {
     height: UdDesign.pt(value),
   );
 }
-
-Widget textFieldGap() {
-  return gapY(15);
-}

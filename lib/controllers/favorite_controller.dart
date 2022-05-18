@@ -19,7 +19,6 @@ class FavoriteController extends ChangeNotifier {
           context: globalKey.currentContext!,
           title: 'This news has been saved',
           backgroundColor: Colors.green);
-      notifyListeners();
     }
     notifyListeners();
   }

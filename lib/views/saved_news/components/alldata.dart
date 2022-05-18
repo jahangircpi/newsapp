@@ -7,7 +7,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../../inappviewscreen.dart';
 import '../../../utilities/functions/gap.dart';
-import '../../../utilities/functions/print.dart';
 import '../../../utilities/widgets/netimagecalling.dart';
 
 class AllSavedDataLists extends StatelessWidget {
@@ -62,7 +61,7 @@ class AllSavedDataLists extends StatelessWidget {
                                 onTap: () {
                                   push(
                                       context: context,
-                                      screen: InAppWebViewExampleScreen(
+                                      screen: InAppWebViewScreen(
                                           website: lists.url!));
                                 },
                                 child: Text(
@@ -97,7 +96,6 @@ class AllSavedDataLists extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               Share.share(lists.url!);
-                              printer(lists.url!);
                             },
                             child: Icon(
                               Icons.share,
@@ -108,7 +106,6 @@ class AllSavedDataLists extends StatelessWidget {
                           gapX(10),
                           InkWell(
                             onTap: () {
-                              printer('shello');
                               favoritecontroller!
                                   .deletefromthelist(newsItem: lists);
                             },

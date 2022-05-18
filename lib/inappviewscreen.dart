@@ -3,20 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:ud_design/ud_design.dart';
 
-class InAppWebViewExampleScreen extends StatefulWidget {
+class InAppWebViewScreen extends StatefulWidget {
   final String website;
-  const InAppWebViewExampleScreen({Key? key, required this.website})
-      : super(key: key);
+  const InAppWebViewScreen({Key? key, required this.website}) : super(key: key);
 
   @override
-  _InAppWebViewExampleScreenState createState() =>
-      _InAppWebViewExampleScreenState();
+  _InAppWebViewScreenState createState() => _InAppWebViewScreenState();
 }
 
-class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
+class _InAppWebViewScreenState extends State<InAppWebViewScreen> {
   final GlobalKey webViewKey = GlobalKey();
 
   InAppWebViewController? webViewController;
@@ -48,31 +45,12 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
               iosId: "1",
               title: "Special",
               action: () async {
-                printer("Menu item Special clicked!");
-                printer(await webViewController?.getSelectedText());
                 await webViewController?.clearFocus();
               })
         ],
         options: ContextMenuOptions(hideDefaultSystemContextMenuItems: false),
-        onCreateContextMenu: (hitTestResult) async {
-          printer("onCreateContextMenu");
-          printer(hitTestResult.extra);
-          printer(await webViewController?.getSelectedText());
-        },
-        onHideContextMenu: () {
-          printer("onHideContextMenu");
-        },
         onContextMenuActionItemClicked: (contextMenuItemClicked) async {
-          Object? id;
-          if ((Platform.isAndroid)) {
-            id = contextMenuItemClicked.androidId;
-          } else {
-            id = contextMenuItemClicked.iosId;
-          }
-          printer("onContextMenuActionItemClicked: " +
-              id.toString() +
-              " " +
-              contextMenuItemClicked.title);
+          if ((Platform.isAndroid)) {}
         });
 
     pullToRefreshController = PullToRefreshController(
@@ -128,11 +106,9 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
             Expanded(
               child: InAppWebView(
                 key: webViewKey,
-                // contextMenu: contextMenu,
                 initialUrlRequest: URLRequest(
                   url: Uri.parse(widget.website),
                 ),
-                // initialFile: "assets/index.html",
                 initialUserScripts: UnmodifiableListView<UserScript>([]),
                 initialOptions: options,
                 pullToRefreshController: pullToRefreshController,
@@ -178,9 +154,6 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                     this.url = url.toString();
                     urlController.text = this.url;
                   });
-                },
-                onConsoleMessage: (controller, consoleMessage) {
-                  printer(consoleMessage);
                 },
               ),
             ),

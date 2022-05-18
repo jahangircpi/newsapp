@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:newsapp/controllers/home_controller.dart';
@@ -7,7 +6,6 @@ import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/views/root.dart';
 import 'package:provider/provider.dart';
 import 'controllers/favorite_controller.dart';
@@ -29,7 +27,6 @@ Future main() async {
       await serviceWorkerController
           .setServiceWorkerClient(AndroidServiceWorkerClient(
         shouldInterceptRequest: (request) async {
-          printer(request);
           return null;
         },
       ));
@@ -58,7 +55,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       key: navKey,
-      title: 'NewsApp Demo',
+      title: 'NewsApp',
       theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: PColors.backgrounColor),

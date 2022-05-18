@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 GlobalKey<NavigatorState>? navKey = GlobalKey();
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final globalKey = GlobalKey<ScaffoldMessengerState>();
 
 void push({required Widget screen, required context}) {

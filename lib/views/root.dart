@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/utilities/constants/assets.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/services/dio_services.dart';
 import 'package:newsapp/views/saved_news/saved_news.dart';
 import 'package:newsapp/views/search/search_screen.dart';
 import 'package:ud_design/ud_design.dart';
@@ -43,6 +44,7 @@ class _RootScreenState extends State<RootScreen> {
   @override
   Widget build(BuildContext context) {
     UdDesign.init(context);
+    DioSingleton.instance.create();
     return Scaffold(
       body: getBody(_currentIndex),
       bottomNavigationBar: Container(

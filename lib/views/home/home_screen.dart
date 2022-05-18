@@ -231,5 +231,4 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 // All Functionalities of InitState End//!
-
 }
