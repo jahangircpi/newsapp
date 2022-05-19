@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
-import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
@@ -71,78 +70,82 @@ class _SearchScreenState extends State<SearchScreen> {
                 gapY(4),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      printer('hello');
-                      showTopModalSheet(
-                        context: context,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            top: size.height * 0.09,
-                            left: size.width * 0.4,
-                            right: size.height * 0.04,
-                          ),
-                          child: Container(
-                            color: PColors.backgrounColor,
-                            child: Column(
-                              children: [
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: categorylistTop.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: UdDesign.pt(10),
-                                        vertical: UdDesign.pt(10),
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          if (categorylistTop[index]
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: UdDesign.pt(8),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        showTopModalSheet(
+                          context: context,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: size.height * 0.12,
+                              left: size.width * 0.35,
+                              right: size.height * 0.05,
+                            ),
+                            child: Container(
+                              color: PColors.backgrounColor,
+                              child: Column(
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: categorylistTop.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: UdDesign.pt(10),
+                                          vertical: UdDesign.pt(8),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            if (categorylistTop[index]
+                                                    .source!
+                                                    .name ==
+                                                'All') {
+                                              searchList = searchcontroller
+                                                  .searchDataLists.articles;
+                                            } else {
+                                              searchList = searchcontroller
+                                                  .searchDataLists.articles!
+                                                  .where((element) => element
+                                                      .source!.name!
+                                                      .contains(
+                                                          categorylistTop[index]
+                                                              .source!
+                                                              .name!))
+                                                  .toList();
+                                            }
+                                            pop(context: context);
+                                            setState(() {});
+                                          },
+                                          child: Center(
+                                            child: Text(
+                                              categorylistTop[index]
                                                   .source!
-                                                  .name ==
-                                              'All') {
-                                            searchList = searchcontroller
-                                                .searchDataLists.articles;
-                                          } else {
-                                            searchList = searchcontroller
-                                                .searchDataLists.articles!
-                                                .where((element) => element
-                                                    .source!.name!
-                                                    .contains(
-                                                        categorylistTop[index]
-                                                            .source!
-                                                            .name!))
-                                                .toList();
-                                          }
-                                          pop(context: context);
-                                          setState(() {});
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                            categorylistTop[index]
-                                                .source!
-                                                .name!,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: UdDesign.fontSize(20),
+                                                  .name!,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: UdDesign.fontSize(20),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.filter_alt,
-                      color: Colors.white,
-                      size: UdDesign.pt(20),
+                        );
+                      },
+                      child: Icon(
+                        Icons.filter_alt,
+                        color: Colors.white,
+                        size: UdDesign.pt(20),
+                      ),
                     ),
                   ),
                 ),

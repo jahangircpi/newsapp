@@ -17,7 +17,9 @@ networkImagescall({required src, textofnoimage}) {
       );
     },
     errorBuilder: (context, exception, stackTrace) {
-      return const Center(child: Text('No image found...'));
+      return const Center(
+        child: Text('No image found...'),
+      );
     },
   );
 }
