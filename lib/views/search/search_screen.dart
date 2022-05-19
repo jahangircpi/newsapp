@@ -1,25 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/functions/callback.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/utilities/widgets/snack_bar.dart';
+import 'package:newsapp/utilities/widgets/top_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import '../../models/home_page_news_model.dart';
 import '../../utilities/constants/themes.dart';
 import '../../utilities/functions/gap.dart';
 import '../../utilities/functions/navigations.dart';
 import '../../utilities/widgets/contianer_white.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  List<Article>? searchList = [];
+  @override
+  void initState() {
+    super.initState();
+    searchList = context.read<SearchController>().searchDataLists.articles!;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: globalKey,
       body: SafeArea(
         child: Consumer<SearchController>(
           builder: ((context, searchcontroller, child) {
+            var set = <dynamic>{};
+            var categorylistTop = searchcontroller.searchDataLists.articles!
+                .where((element) => set.add(element.source!.name!))
+                .toSet()
+                .toList();
+            categorylistTop.sort((a, b) => a.source!.name!
+                .toLowerCase()
+                .compareTo(b.source!.name!.toLowerCase()));
+            categorylistTop.insert(
+              0,
+              Article(
+                source: Source(id: 'null', name: 'All'),
+              ),
+            );
+
             return Column(
               children: [
                 gapY(PThemes.padding),
@@ -35,12 +69,95 @@ class SearchScreen extends StatelessWidget {
                       hinttext: 'Search Anything'),
                 ),
                 gapY(4),
-                Expanded(
-                  child: containerwhite(
-                    dataStateEnum: searchcontroller.searchDataState,
-                    listName: searchcontroller.searchDataLists.articles,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      printer('hello');
+                      showTopModalSheet(
+                        context: context,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: size.height * 0.09,
+                            left: size.width * 0.4,
+                            right: size.height * 0.04,
+                          ),
+                          child: Container(
+                            color: PColors.backgrounColor,
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: categorylistTop.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: UdDesign.pt(10),
+                                        vertical: UdDesign.pt(10),
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (categorylistTop[index]
+                                                  .source!
+                                                  .name ==
+                                              'All') {
+                                            searchList = searchcontroller
+                                                .searchDataLists.articles;
+                                          } else {
+                                            searchList = searchcontroller
+                                                .searchDataLists.articles!
+                                                .where((element) => element
+                                                    .source!.name!
+                                                    .contains(
+                                                        categorylistTop[index]
+                                                            .source!
+                                                            .name!))
+                                                .toList();
+                                          }
+                                          pop(context: context);
+                                          setState(() {});
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            categorylistTop[index]
+                                                .source!
+                                                .name!,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: UdDesign.fontSize(20),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.filter_alt,
+                      color: Colors.white,
+                      size: UdDesign.pt(20),
+                    ),
                   ),
-                )
+                ),
+                gapY(4),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: UdDesign.pt(8),
+                    ),
+                    child: containerwhite(
+                      dataStateEnum: searchcontroller.searchDataState,
+                      listName: searchList,
+                    ),
+                  ),
+                ),
               ],
             );
           }),

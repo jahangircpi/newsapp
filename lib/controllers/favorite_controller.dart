@@ -7,6 +7,11 @@ import '../utilities/functions/navigations.dart';
 
 class FavoriteController extends ChangeNotifier {
   List<Article> saveArticle = <Article>[];
+  int selectIndexcat = 0;
+  getSetelectdIndex({value}) {
+    selectIndexcat = value;
+    notifyListeners();
+  }
 
   addingtoLists({required Article newsItem}) {
     if (saveArticle

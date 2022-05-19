@@ -2,19 +2,21 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/models/home_page_news_model.dart';
-import 'package:newsapp/utilities/functions/navigations.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../../inappviewscreen.dart';
 import '../../../utilities/functions/gap.dart';
+import '../../../utilities/functions/navigations.dart';
 import '../../../utilities/widgets/netimagecalling.dart';
 
 class AllSavedDataLists extends StatelessWidget {
   final List<Article>? listName;
   final FavoriteController? favoritecontroller;
-  const AllSavedDataLists(
-      {Key? key, required this.listName, required this.favoritecontroller})
-      : super(key: key);
+  const AllSavedDataLists({
+    Key? key,
+    required this.listName,
+    required this.favoritecontroller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,8 @@ class AllSavedDataLists extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ))
         : ListView.builder(
-            itemCount: listName!.length,
+            itemCount: listName!.reversed.length,
+            shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               var lists = listName![index];
               return Padding(
@@ -60,9 +63,10 @@ class AllSavedDataLists extends StatelessWidget {
                               InkWell(
                                 onTap: () {
                                   push(
-                                      context: context,
-                                      screen: InAppWebViewScreen(
-                                          website: lists.url!));
+                                    context: context,
+                                    screen:
+                                        InAppWebViewScreen(website: lists.url!),
+                                  );
                                 },
                                 child: Text(
                                   lists.title!,

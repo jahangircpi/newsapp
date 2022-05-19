@@ -68,10 +68,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 topbarCategory(homecontroller),
                 SliddingNewsSection(size: size),
                 Expanded(
-                  child: containerwhite(
-                    dataStateEnum: homecontroller.homeDataState,
-                    listController: _controller2,
-                    listName: homecontroller.articlesLists!,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: UdDesign.pt(4),
+                    ),
+                    child: containerwhite(
+                      dataStateEnum: homecontroller.homeDataState,
+                      listController: _controller2,
+                      listName: homecontroller.articlesLists!,
+                    ),
                   ),
                 ),
                 homecontroller.homeDataState == DataState.isMoreDatAvailable
