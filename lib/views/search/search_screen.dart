@@ -22,12 +22,11 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Article>? searchList = [];
   @override
   void initState() {
     super.initState();
-    searchList = context.read<SearchController>().searchDataLists.articles!;
-    setState(() {});
+    context.read<SearchController>().searchList =
+        context.read<SearchController>().searchDataLists.articles!;
   }
 
   @override
@@ -110,18 +109,21 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   .source!
                                                   .name ==
                                               'All') {
-                                            searchList = searchcontroller
-                                                .searchDataLists.articles;
+                                            searchcontroller.searchList =
+                                                searchcontroller
+                                                    .searchDataLists.articles;
                                           } else {
-                                            searchList = searchcontroller
-                                                .searchDataLists.articles!
-                                                .where((element) => element
-                                                    .source!.name!
-                                                    .contains(
-                                                        categorylistTop[index]
-                                                            .source!
-                                                            .name!))
-                                                .toList();
+                                            searchcontroller.searchList =
+                                                searchcontroller
+                                                    .searchDataLists.articles!
+                                                    .where((element) => element
+                                                        .source!.name!
+                                                        .contains(
+                                                            categorylistTop[
+                                                                    index]
+                                                                .source!
+                                                                .name!))
+                                                    .toList();
                                           }
                                           pop(context: context);
                                           setState(() {});
@@ -162,7 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     child: containerwhite(
                       dataStateEnum: searchcontroller.searchDataState,
-                      listName: searchList,
+                      listName: searchcontroller.searchList,
                     ),
                   ),
                 ),
@@ -200,12 +202,17 @@ class _SearchScreenState extends State<SearchScreen> {
             onTap: () {
               printer(searchcontroller!.searchTextController!.text);
               if (searchcontroller.searchTextController!.text.isNotEmpty) {
-                searchcontroller.getSearchData(
-                    searchTexts: searchcontroller.searchTextController!.text);
+                searchcontroller
+                    .getSearchData(
+                        searchTexts:
+                            searchcontroller.searchTextController!.text)
+                    .then((value) {
+                  StorageManager.saveData('searchhistory',
+                      searchcontroller.searchTextController!.text);
+                  searchcontroller.searchList =
+                      searchcontroller.searchDataLists.articles!;
+                });
 
-                StorageManager.saveData('searchhistory',
-                    searchcontroller.searchTextController!.text);
-                searchList = searchcontroller.searchDataLists.articles!;
                 setState(() {});
               } else {
                 snackBarProject(context: context, title: 'Search Box is Empty');

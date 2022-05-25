@@ -8,6 +8,7 @@ import '../utilities/services/dio_services.dart';
 
 class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
+  List<Article>? searchList = [];
   DataState searchDataState = DataState.initial;
   TextEditingController? searchTextController = TextEditingController();
   ScrollController sheetScrollController = ScrollController();
