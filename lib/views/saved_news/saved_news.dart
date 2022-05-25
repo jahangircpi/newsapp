@@ -75,64 +75,68 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
                         }),
                   ),
                   gapY(8),
-                  SizedBox(
-                    height: UdDesign.pt(50),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categorylistTop.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: UdDesign.pt(4),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              favoritecontroller.getSetelectdIndex(
-                                  value: index);
-                              if (categorylistTop[index].source!.name ==
-                                  'All') {
-                                searchArticleLists =
-                                    favoritecontroller.saveArticle;
-                              } else {
-                                searchArticleLists = favoritecontroller
-                                    .saveArticle
-                                    .where((element) => element.source!.name!
-                                        .contains(categorylistTop[index]
-                                            .source!
-                                            .name!))
-                                    .toList();
-                              }
-                              setState(() {});
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color:
-                                    favoritecontroller.selectIndexcat == index
-                                        ? PColors.basicColor
-                                        : Colors.white10,
-                              ),
-                              child: Padding(
+                  searchArticleLists.isEmpty
+                      ? const SizedBox.shrink()
+                      : SizedBox(
+                          height: UdDesign.pt(50),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: categorylistTop.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
                                 padding: EdgeInsets.symmetric(
-                                  vertical: UdDesign.pt(8),
-                                  horizontal: UdDesign.pt(20),
+                                  horizontal: UdDesign.pt(4),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    categorylistTop[index].source!.name!,
-                                    style: TextStyle(
-                                        fontSize: UdDesign.fontSize(15),
-                                        color: Colors.white),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    favoritecontroller.getSetelectdIndex(
+                                        value: index);
+                                    if (categorylistTop[index].source!.name ==
+                                        'All') {
+                                      searchArticleLists =
+                                          favoritecontroller.saveArticle;
+                                    } else {
+                                      searchArticleLists = favoritecontroller
+                                          .saveArticle
+                                          .where((element) => element
+                                              .source!.name!
+                                              .contains(categorylistTop[index]
+                                                  .source!
+                                                  .name!))
+                                          .toList();
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color:
+                                          favoritecontroller.selectIndexcat ==
+                                                  index
+                                              ? PColors.basicColor
+                                              : Colors.white10,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: UdDesign.pt(8),
+                                        horizontal: UdDesign.pt(20),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          categorylistTop[index].source!.name!,
+                                          style: TextStyle(
+                                              fontSize: UdDesign.fontSize(15),
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
                   gapY(10),
                   Expanded(
                     child: AllSavedDataLists(

@@ -60,6 +60,15 @@ class AllSavedDataLists extends StatelessWidget {
                                 ),
                               ),
                               gapY(4),
+                              Text(
+                                "${lists.publishedAt!.year.toString()}-${lists.publishedAt!.month.toString().padLeft(2, '0')}-${lists.publishedAt!.day.toString().padLeft(2, '0')} ${lists.publishedAt!.hour.toString().padLeft(2, '0')}-${lists.publishedAt!.minute.toString().padLeft(2, '0')}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: UdDesign.fontSize(16),
+                                ),
+                              ),
+                              gapY(4),
                               InkWell(
                                 onTap: () {
                                   push(

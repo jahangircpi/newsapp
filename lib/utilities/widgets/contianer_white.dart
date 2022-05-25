@@ -96,11 +96,12 @@ containerwhite({
                                           ),
                                         ),
                                         gapX(10),
-                                        Text(
-                                            "${lists.publishedAt.year.toString()}-${lists.publishedAt.month.toString().padLeft(2, '0')}-${lists.publishedAt.day.toString().padLeft(2, '0')} ${lists.publishedAt.hour.toString().padLeft(2, '0')}-${lists.publishedAt.minute.toString().padLeft(2, '0')}")
                                       ],
                                     ),
                                   ),
+                                  gapY(5),
+                                  Text(
+                                      "${lists.publishedAt.year.toString()}-${lists.publishedAt.month.toString().padLeft(2, '0')}-${lists.publishedAt.day.toString().padLeft(2, '0')} ${lists.publishedAt.hour.toString().padLeft(2, '0')}-${lists.publishedAt.minute.toString().padLeft(2, '0')}"),
                                   gapY(5),
                                   InkWell(
                                     onTap: () {
