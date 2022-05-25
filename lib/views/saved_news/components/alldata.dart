@@ -80,17 +80,27 @@ class AllSavedDataLists extends StatelessWidget {
                             ],
                           ),
                         ),
+                        SizedBox(
+                          width: size.width * 0.01,
+                        ),
                         Expanded(
                           flex: 0,
                           child: SizedBox(
                             width: size.width * 0.3,
+                            height: size.height * 0.12,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: networkImagescall(src: lists.urlToImage!),
+                              child: Center(
+                                child:
+                                    networkImagescall(src: lists.urlToImage!),
+                              ),
                             ),
                           ),
                         )
                       ],
+                    ),
+                    SizedBox(
+                      height: UdDesign.pt(5),
                     ),
                     SizedBox(
                       height: UdDesign.pt(15),

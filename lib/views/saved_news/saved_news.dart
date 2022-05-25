@@ -63,6 +63,7 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
                     ),
                     child: searchField(
                         hintText: 'Search',
+                        controller: textController,
                         onChanged: (v) {
                           searchArticleLists = favoritecontroller.saveArticle
                               .where((element) => element.title!

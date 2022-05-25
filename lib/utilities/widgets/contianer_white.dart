@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/favorite_controller.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
+import 'package:newsapp/utilities/widgets/loading/three_bounch.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ud_design/ud_design.dart';
@@ -23,9 +24,8 @@ containerwhite({
     child: dataStateEnum == DataState.initial ||
             dataStateEnum == DataState.loading
         ? const Center(
-            child: CircularProgressIndicator(
-              backgroundColor: PColors.containerColor,
-              color: PColors.sliverColor,
+            child: Loader(
+              color: Colors.white,
             ),
           )
         : dataStateEnum == DataState.error

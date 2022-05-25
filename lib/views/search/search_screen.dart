@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/utilities/widgets/snack_bar.dart';

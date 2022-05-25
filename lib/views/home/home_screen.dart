@@ -6,17 +6,19 @@ import 'package:newsapp/utilities/constants/urls.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
+import 'package:newsapp/utilities/functions/print.dart';
+import 'package:newsapp/utilities/widgets/loading/three_bounch.dart';
 import 'package:newsapp/views/home/components/utilities/allpopularnewswebsite.dart';
 import 'package:newsapp/views/home/components/filtersection.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../controllers/favorite_controller.dart';
 import '../../models/home_page_news_model.dart';
+import '../../utilities/constants/colors.dart';
 import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/contianer_white.dart';
 import 'components/settings_section.dart';
 import 'components/slidingnews.dart';
-import 'components/topbarlistview.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -80,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 homecontroller.homeDataState == DataState.isMoreDatAvailable
-                    ? const CircularProgressIndicator()
+                    ? const Loader(
+                        color: Colors.white,
+                      )
                     : const SizedBox(),
               ],
             );
@@ -106,19 +110,93 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget topbarCategory(HomeController homecontroller) {
+  Widget topbarCategory(
+    HomeController homecontroller,
+  ) {
     return SizedBox(
       height: UdDesign.pt(80),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: UdDesign.pt(50),
-            child: TopBarListView(
-              homecontroller: homecontroller,
-              pagenumber: page,
-            ),
-          ),
+              height: UdDesign.pt(50),
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: popularwebsiteLists.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: UdDesign.pt(4),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        page = 1;
+                        homecontroller.getPopularItemIndex(indexGiven: index);
+                        if (popularwebsiteLists[index].title == 'All') {
+                          var newList = popularwebsiteLists
+                              .map((e) => e.title!)
+                              .toList()
+                              .toString()
+                              .replaceAll('[', '')
+                              .replaceAll(']', '')
+                              .replaceAll(' ', '')
+                              .trim();
+                          homecontroller
+                              .getHomeData(
+                                  newswebsite: newList,
+                                  fromdate: DateTime(
+                                          homecontroller.dateNow.year,
+                                          homecontroller.dateNow.month - 1,
+                                          homecontroller.dateNow.day)
+                                      .toString()
+                                      .split(' ')[0],
+                                  todate: homecontroller.dateNow)
+                              .toString()
+                              .split(' ')[0];
+                        } else {
+                          homecontroller
+                              .getHomeData(
+                                  newswebsite:
+                                      popularwebsiteLists[index].title!,
+                                  fromdate: DateTime(
+                                          homecontroller.dateNow.year,
+                                          homecontroller.dateNow.month - 1,
+                                          homecontroller.dateNow.day)
+                                      .toString()
+                                      .split(' ')[0],
+                                  todate: homecontroller.dateNow)
+                              .toString()
+                              .split(' ')[0];
+                        }
+                      },
+                      child: Container(
+                        // color: PColors.basicColor,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: homecontroller.popularItemIndex == index
+                              ? PColors.basicColor
+                              : Colors.white10,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: UdDesign.pt(8),
+                            horizontal: UdDesign.pt(20),
+                          ),
+                          child: Center(
+                            child: Text(
+                              popularwebsiteLists[index].webSite!,
+                              style: TextStyle(
+                                  fontSize: UdDesign.fontSize(15),
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              )),
         ],
       ),
     );
@@ -177,6 +255,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return _controller2.addListener(() {
       if (_controller2.position.pixels ==
           _controller2.position.maxScrollExtent) {
+        printer('reached bottom');
+        printer(page);
         page++;
         if (page <= 5) {
           if (popularwebsiteLists[
