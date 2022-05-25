@@ -18,12 +18,12 @@ class SavedNewsScreen extends StatefulWidget {
 }
 
 class _SavedNewsScreenState extends State<SavedNewsScreen> {
-  List<Article> searchArticleLists = <Article>[];
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    searchArticleLists = context.read<FavoriteController>().saveArticle;
+    context.read<FavoriteController>().searchArticleLists =
+        context.read<FavoriteController>().saveArticle;
     setState(() {});
   }
 
@@ -50,7 +50,8 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
                 source: Source(id: 'null', name: 'All'),
               ),
             );
-            searchArticleLists = searchArticleLists.reversed.toList();
+            favoritecontroller.searchArticleLists =
+                favoritecontroller.searchArticleLists.reversed.toList();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: PThemes.padding),
               child: Column(
@@ -65,82 +66,90 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
                         hintText: 'Search',
                         controller: textController,
                         onChanged: (v) {
-                          searchArticleLists = favoritecontroller.saveArticle
-                              .where((element) => element.title!
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(v))
-                              .toList();
+                          favoritecontroller.searchArticleLists =
+                              favoritecontroller
+                                  .saveArticle
+                                  .where((element) => element.title!
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(v))
+                                  .toList();
                           setState(() {});
                         }),
                   ),
                   gapY(8),
-                  searchArticleLists.isEmpty
+                  favoritecontroller.searchArticleLists.isEmpty
                       ? const SizedBox.shrink()
-                      : SizedBox(
-                          height: UdDesign.pt(50),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: categorylistTop.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: UdDesign.pt(4),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    favoritecontroller.getSetelectdIndex(
-                                        value: index);
-                                    if (categorylistTop[index].source!.name ==
-                                        'All') {
-                                      searchArticleLists =
-                                          favoritecontroller.saveArticle;
-                                    } else {
-                                      searchArticleLists = favoritecontroller
-                                          .saveArticle
-                                          .where((element) => element
-                                              .source!.name!
-                                              .contains(categorylistTop[index]
-                                                  .source!
-                                                  .name!))
-                                          .toList();
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color:
-                                          favoritecontroller.selectIndexcat ==
-                                                  index
-                                              ? PColors.basicColor
-                                              : Colors.white10,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: UdDesign.pt(8),
-                                        horizontal: UdDesign.pt(20),
+                      : Align(
+                          alignment: Alignment.centerLeft,
+                          child: SizedBox(
+                            height: UdDesign.pt(50),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: categorylistTop.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: UdDesign.pt(4),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      favoritecontroller.getSetelectdIndex(
+                                          value: index);
+                                      if (categorylistTop[index].source!.name ==
+                                          'All') {
+                                        favoritecontroller.searchArticleLists =
+                                            favoritecontroller.saveArticle;
+                                      } else {
+                                        favoritecontroller.searchArticleLists =
+                                            favoritecontroller.saveArticle
+                                                .where((element) => element
+                                                    .source!.name!
+                                                    .contains(
+                                                        categorylistTop[index]
+                                                            .source!
+                                                            .name!))
+                                                .toList();
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color:
+                                            favoritecontroller.selectIndexcat ==
+                                                    index
+                                                ? PColors.basicColor
+                                                : Colors.white10,
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          categorylistTop[index].source!.name!,
-                                          style: TextStyle(
-                                              fontSize: UdDesign.fontSize(15),
-                                              color: Colors.white),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: UdDesign.pt(8),
+                                          horizontal: UdDesign.pt(20),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            categorylistTop[index]
+                                                .source!
+                                                .name!,
+                                            style: TextStyle(
+                                                fontSize: UdDesign.fontSize(15),
+                                                color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ),
                   gapY(10),
                   Expanded(
                     child: AllSavedDataLists(
-                        listName: searchArticleLists,
+                        listName: favoritecontroller.searchArticleLists,
                         favoritecontroller: favoritecontroller),
                   ),
                 ],

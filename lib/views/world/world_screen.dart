@@ -67,7 +67,6 @@ class _WorldScreenState extends State<WorldScreen> {
           Expanded(
             flex: 4,
             child: searchField(
-                suffixShow: true,
                 controller: textController,
                 hintText: 'Search Country',
                 onChanged: (v) {

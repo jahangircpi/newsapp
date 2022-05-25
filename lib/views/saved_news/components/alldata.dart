@@ -9,7 +9,7 @@ import '../../../utilities/functions/gap.dart';
 import '../../../utilities/functions/navigations.dart';
 import '../../../utilities/widgets/netimagecalling.dart';
 
-class AllSavedDataLists extends StatelessWidget {
+class AllSavedDataLists extends StatefulWidget {
   final List<Article>? listName;
   final FavoriteController? favoritecontroller;
   const AllSavedDataLists({
@@ -19,19 +19,24 @@ class AllSavedDataLists extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<AllSavedDataLists> createState() => _AllSavedDataListsState();
+}
+
+class _AllSavedDataListsState extends State<AllSavedDataLists> {
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return listName!.isEmpty
+    return widget.listName!.isEmpty
         ? const Center(
             child: Text(
             'Saved List is empty',
             style: TextStyle(color: Colors.white),
           ))
         : ListView.builder(
-            itemCount: listName!.reversed.length,
+            itemCount: widget.listName!.reversed.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              var lists = listName![index];
+              var lists = widget.listName![index];
               return Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: UdDesign.pt(4),
@@ -129,8 +134,11 @@ class AllSavedDataLists extends StatelessWidget {
                           gapX(10),
                           InkWell(
                             onTap: () {
-                              favoritecontroller!
+                              widget.favoritecontroller!
                                   .deletefromthelist(newsItem: lists);
+                              widget.favoritecontroller!.searchArticleLists =
+                                  widget.favoritecontroller!.saveArticle;
+                              setState(() {});
                             },
                             child: Align(
                               alignment: Alignment.centerRight,

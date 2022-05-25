@@ -10,6 +10,7 @@ class SearchController extends ChangeNotifier {
   HomePageNewsModel searchDataLists = HomePageNewsModel();
   DataState searchDataState = DataState.initial;
   TextEditingController? searchTextController = TextEditingController();
+  ScrollController sheetScrollController = ScrollController();
 
   getSearchData({required searchTexts}) async {
     searchDataState = DataState.loading;

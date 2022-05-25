@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/utilities/widgets/snack_bar.dart';
@@ -85,56 +86,61 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                             child: Container(
                               color: PColors.backgrounColor,
-                              child: Column(
-                                children: [
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: categorylistTop.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: UdDesign.pt(10),
-                                          vertical: UdDesign.pt(8),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            if (categorylistTop[index]
-                                                    .source!
-                                                    .name ==
-                                                'All') {
-                                              searchList = searchcontroller
-                                                  .searchDataLists.articles;
-                                            } else {
-                                              searchList = searchcontroller
-                                                  .searchDataLists.articles!
-                                                  .where((element) => element
-                                                      .source!.name!
-                                                      .contains(
-                                                          categorylistTop[index]
-                                                              .source!
-                                                              .name!))
-                                                  .toList();
-                                            }
-                                            pop(context: context);
-                                            setState(() {});
-                                          },
-                                          child: Center(
-                                            child: Text(
-                                              categorylistTop[index]
+                              height: size.height * 0.5,
+                              child: Scrollbar(
+                                controller:
+                                    searchcontroller.sheetScrollController,
+                                thumbVisibility: true,
+                                child: ListView.builder(
+                                  controller:
+                                      searchcontroller.sheetScrollController,
+                                  shrinkWrap: true,
+                                  physics: const ScrollPhysics(),
+                                  itemCount: categorylistTop.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: UdDesign.pt(10),
+                                        vertical: UdDesign.pt(8),
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (categorylistTop[index]
                                                   .source!
-                                                  .name!,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: UdDesign.fontSize(20),
-                                              ),
+                                                  .name ==
+                                              'All') {
+                                            searchList = searchcontroller
+                                                .searchDataLists.articles;
+                                          } else {
+                                            searchList = searchcontroller
+                                                .searchDataLists.articles!
+                                                .where((element) => element
+                                                    .source!.name!
+                                                    .contains(
+                                                        categorylistTop[index]
+                                                            .source!
+                                                            .name!))
+                                                .toList();
+                                          }
+                                          pop(context: context);
+                                          setState(() {});
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            categorylistTop[index]
+                                                .source!
+                                                .name!,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: UdDesign.fontSize(20),
                                             ),
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -177,11 +183,12 @@ class _SearchScreenState extends State<SearchScreen> {
     return Row(
       children: [
         Expanded(
-            flex: 4,
-            child: searchField(
-                controller: controllerForSearcing,
-                onChanged: onChanged,
-                hintText: hinttext)),
+          flex: 4,
+          child: searchField(
+              controller: controllerForSearcing,
+              onChanged: onChanged,
+              hintText: hinttext),
+        ),
         const Expanded(
           flex: 0,
           child: SizedBox(),
@@ -191,11 +198,15 @@ class _SearchScreenState extends State<SearchScreen> {
           flex: 0,
           child: InkWell(
             onTap: () {
-              if (searchcontroller!.searchTextController!.text.isNotEmpty) {
+              printer(searchcontroller!.searchTextController!.text);
+              if (searchcontroller.searchTextController!.text.isNotEmpty) {
                 searchcontroller.getSearchData(
                     searchTexts: searchcontroller.searchTextController!.text);
+
                 StorageManager.saveData('searchhistory',
                     searchcontroller.searchTextController!.text);
+                searchList = searchcontroller.searchDataLists.articles!;
+                setState(() {});
               } else {
                 snackBarProject(context: context, title: 'Search Box is Empty');
               }

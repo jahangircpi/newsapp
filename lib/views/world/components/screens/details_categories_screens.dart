@@ -3,6 +3,7 @@ import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/print.dart';
+import 'package:newsapp/utilities/widgets/loading/three_bounch.dart';
 import 'package:newsapp/views/world/components/category_lists.dart';
 import 'package:newsapp/views/world/components/screens/components/topcategorylistview.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,6 @@ class _DetailsglobalState extends State<Detailsglobal> {
       await datacallingInitstate();
     });
     paginations();
-    setState(() {});
   }
 
   @override
@@ -53,7 +53,9 @@ class _DetailsglobalState extends State<Detailsglobal> {
                       listController: scrollercontroller),
                 ),
                 worldcontroller.worldDataState == DataState.isMoreDatAvailable
-                    ? const CircularProgressIndicator()
+                    ? const Loader(
+                        color: Colors.white,
+                      )
                     : const SizedBox(),
               ],
             );

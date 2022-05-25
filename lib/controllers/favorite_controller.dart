@@ -7,6 +7,8 @@ import '../utilities/functions/navigations.dart';
 
 class FavoriteController extends ChangeNotifier {
   List<Article> saveArticle = <Article>[];
+  List<Article> searchArticleLists = <Article>[];
+
   int selectIndexcat = 0;
   getSetelectdIndex({value}) {
     selectIndexcat = value;
@@ -40,7 +42,7 @@ class FavoriteController extends ChangeNotifier {
           context: globalKey.currentContext!,
           title: 'This news has been Deleted',
           backgroundColor: Colors.red);
-      notifyListeners();
     }
+    notifyListeners();
   }
 }
