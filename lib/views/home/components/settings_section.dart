@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
+import 'package:newsapp/utilities/constants/keys.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/views/home/components/utilities/apikeyslists.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
-
 import '../../../controllers/home_controller.dart';
 import '../../../utilities/constants/colors.dart';
 import '../../../utilities/constants/urls.dart';
@@ -15,9 +15,7 @@ import 'utilities/allpopularnewswebsite.dart';
 
 class SettingSection extends StatelessWidget {
   final HomeController? homecontroller;
-
   const SettingSection({Key? key, this.homecontroller}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -51,7 +49,7 @@ class SettingSection extends StatelessWidget {
                             );
                             Urls.apiKey = homecontroller!.apikey!;
                             StorageManager.saveData(
-                                "apiKey", homecontroller!.apikey!);
+                                PKeys.apiKey, homecontroller!.apikey!);
                           },
                         );
                       },

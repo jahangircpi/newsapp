@@ -71,7 +71,9 @@ class _WorldScreenState extends State<WorldScreen> {
                 hintText: 'Search Country',
                 onChanged: (v) {
                   countriesnames = fullCountriesName.where((ee) {
-                    return ee.name!.toString().toLowerCase().contains(v);
+                    return ee.name!.toString().toLowerCase().contains(
+                          v.toString().toLowerCase(),
+                        );
                   }).toList();
                   setState(() {});
                 }),
@@ -97,8 +99,8 @@ class _WorldScreenState extends State<WorldScreen> {
             push(
               context: context,
               screen: Detailsglobal(
-                country: countriesnames![index].shortname!,
-                fullcountryname: countriesnames![index].name!,
+                country: countriesnames![index].shortname ?? "",
+                fullcountryname: countriesnames![index].name ?? "",
               ),
             );
           },
@@ -108,7 +110,7 @@ class _WorldScreenState extends State<WorldScreen> {
                 color: PColors.containerColor),
             child: Center(
               child: Text(
-                countriesnames![index].name!,
+                countriesnames![index].name ?? "",
                 style:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),

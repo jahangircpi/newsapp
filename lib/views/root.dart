@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/utilities/constants/assets.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
+import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/services/dio_services.dart';
 import 'package:newsapp/views/saved_news/saved_news.dart';
 import 'package:newsapp/views/search/search_screen.dart';
@@ -47,53 +48,43 @@ class _RootScreenState extends State<RootScreen> {
     DioSingleton.instance.create();
     return Scaffold(
       body: getBody(_currentIndex),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(25),
-            topLeft: Radius.circular(25),
-          ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25.0),
+          topRight: Radius.circular(25.0),
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25.0),
-            topRight: Radius.circular(25.0),
-          ),
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                  icon: iconwithdesignmethod(
-                    icon: Passets.worldIcon,
-                    titleText: "World",
-                    currentIndex: 0,
-                  ),
-                  label: ''),
-              BottomNavigationBarItem(
-                  icon: iconwithdesignmethod(
-                      icon: Passets.homeIcon,
-                      titleText: "Home",
-                      currentIndex: 1),
-                  label: ''),
-              BottomNavigationBarItem(
-                  icon: iconwithdesignmethod(
-                      icon: Passets.searchIcon,
-                      titleText: "Search",
-                      currentIndex: 2),
-                  label: ''),
-              BottomNavigationBarItem(
-                  icon: iconwithdesignmethod(
-                      icon: Passets.saveIcon,
-                      titleText: "Saved",
-                      currentIndex: 3),
-                  label: ''),
-            ],
-          ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: iconwithdesignmethod(
+                  icon: Passets.worldIcon,
+                  titleText: "World",
+                  currentIndex: 0,
+                ),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: iconwithdesignmethod(
+                    icon: Passets.homeIcon, titleText: "Home", currentIndex: 1),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: iconwithdesignmethod(
+                    icon: Passets.searchIcon,
+                    titleText: "Search",
+                    currentIndex: 2),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: iconwithdesignmethod(
+                    icon: Passets.saveIcon,
+                    titleText: "Saved",
+                    currentIndex: 3),
+                label: ''),
+          ],
         ),
       ),
     );
@@ -102,49 +93,39 @@ class _RootScreenState extends State<RootScreen> {
   Widget iconwithdesignmethod({icon, titleText, currentIndex}) {
     return _currentIndex == currentIndex
         ? Padding(
-            padding: EdgeInsets.only(top: UdDesign.pt(8)),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 2,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: PColors.backgrounColor,
+                borderRadius: BorderRadius.circular(38),
+              ),
               child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: PColors.backgrounColor,
-                      borderRadius: BorderRadius.circular(38),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: UdDesign.pt(5),
-                        horizontal: UdDesign.pt(20),
+                  gapY(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        icon,
+                        color: _currentIndex == currentIndex
+                            ? Colors.cyan
+                            : Colors.black,
+                        height: UdDesign.pt(25),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            icon,
-                            color: _currentIndex == currentIndex
-                                ? Colors.cyan
-                                : Colors.black,
-                            height: UdDesign.pt(25),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: UdDesign.pt(8),
-                              vertical: UdDesign.pt(8),
-                            ),
-                            child: Text(
-                              titleText,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: UdDesign.fontSize(14),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                      gapX(5),
+                      Text(
+                        titleText ?? "",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: UdDesign.fontSize(14),
+                        ),
+                      )
+                    ],
                   ),
+                  gapY(5),
                 ],
               ),
             ),

@@ -13,9 +13,9 @@ import '../functions/gap.dart';
 import 'netimagecalling.dart';
 
 containerwhite({
-  required dataStateEnum,
+  required DataState dataStateEnum,
   listName,
-  listController,
+  ScrollController? listController,
 }) {
   return Padding(
     padding: EdgeInsets.symmetric(

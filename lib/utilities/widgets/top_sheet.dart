@@ -4,13 +4,15 @@ Future<T?> showTopModalSheet<T>({
   @required context,
   @required child,
 }) {
-  return Navigator.of(context).push(PageRouteBuilder<T>(
-      pageBuilder: (_, __, ___) {
-        return TopModalSheet<T>(
-          child: child,
-        );
-      },
-      opaque: false));
+  return Navigator.of(context).push(
+    PageRouteBuilder<T>(
+        pageBuilder: (_, __, ___) {
+          return TopModalSheet<T>(
+            child: child,
+          );
+        },
+        opaque: false),
+  );
 }
 
 class TopModalSheet<T> extends StatefulWidget {

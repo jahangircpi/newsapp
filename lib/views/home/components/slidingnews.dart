@@ -71,7 +71,7 @@ class SliddingNewsSection extends StatelessWidget {
                                                   horizontal: UdDesign.pt(4),
                                                 ),
                                                 child: networkImagescall(
-                                                    src: e.urlToImage!,
+                                                    src: e.urlToImage ?? "",
                                                     textofnoimage:
                                                         Colors.white)),
                                           ),
@@ -94,7 +94,7 @@ class SliddingNewsSection extends StatelessWidget {
                                                           UdDesign.pt(12),
                                                     ),
                                                     child: Text(
-                                                      e.title!,
+                                                      e.title ?? "",
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -117,7 +117,7 @@ class SliddingNewsSection extends StatelessWidget {
                               ),
                               Positioned(
                                 bottom: 0,
-                                left: size.width * 0.4,
+                                left: size.width * 0.25,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: List.generate(

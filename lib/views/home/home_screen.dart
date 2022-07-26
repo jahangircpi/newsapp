@@ -6,7 +6,6 @@ import 'package:newsapp/utilities/constants/urls.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
 import 'package:newsapp/utilities/functions/navigations.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/widgets/loading/three_bounch.dart';
 import 'package:newsapp/views/home/components/utilities/allpopularnewswebsite.dart';
 import 'package:newsapp/views/home/components/filtersection.dart';
@@ -15,6 +14,7 @@ import 'package:ud_design/ud_design.dart';
 import '../../controllers/favorite_controller.dart';
 import '../../models/home_page_news_model.dart';
 import '../../utilities/constants/colors.dart';
+import '../../utilities/constants/keys.dart';
 import '../../utilities/services/sharedpreference_service.dart';
 import '../../utilities/widgets/contianer_white.dart';
 import 'components/settings_section.dart';
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     String newList = sortingoutlist();
-    StorageManager.readData("apiKey").then((value) {
+    StorageManager.readData(PKeys.apiKey).then((value) {
       apikeyInitSection(value);
     }).then(
       ((value) async {
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              popularwebsiteLists[index].webSite!,
+                              popularwebsiteLists[index].webSite ?? "",
                               style: TextStyle(
                                   fontSize: UdDesign.fontSize(15),
                                   color: Colors.white),
@@ -232,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> searchInitSection() async {
-    await StorageManager.readData('searchhistory').then((value) {
+    await StorageManager.readData(PKeys.searchhistory).then((value) {
       if (value != null) {
         context.read<SearchController>().searchTextController!.text = value;
         if (context.read<SearchController>().searchDataState !=
@@ -246,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> savetofavoriteSection() async {
-    await StorageManager.readData('savedlists').then((value) {
+    await StorageManager.readData(PKeys.savedlists).then((value) {
       context.read<FavoriteController>().saveArticle = Article.decode(value);
     });
   }
@@ -255,8 +255,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return _controller2.addListener(() {
       if (_controller2.position.pixels ==
           _controller2.position.maxScrollExtent) {
-        printer('reached bottom');
-        printer(page);
         page++;
         if (page <= 5) {
           if (popularwebsiteLists[

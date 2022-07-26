@@ -15,7 +15,7 @@ class WorldController extends ChangeNotifier {
     notifyListeners();
   }
 
-  getCategoryData({countryname, categoryName}) async {
+  getCategoryData({String? countryname, String? categoryName}) async {
     worldDataState = DataState.loading;
     notifyListeners();
     try {

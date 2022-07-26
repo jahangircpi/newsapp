@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/models/home_page_news_model.dart';
+import 'package:newsapp/utilities/constants/keys.dart';
 import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/snack_bar.dart';
 
@@ -21,7 +22,7 @@ class FavoriteController extends ChangeNotifier {
         .isNegative) {
       saveArticle.add(newsItem);
       final String encodedData = Article.encode(saveArticle);
-      StorageManager.saveData('savedlists', encodedData);
+      StorageManager.saveData(PKeys.savedlists, encodedData);
       snackBarProject(
           context: globalKey.currentContext!,
           title: 'This news has been saved',
@@ -37,7 +38,7 @@ class FavoriteController extends ChangeNotifier {
         false) {
       saveArticle.remove(newsItem);
       final String encodedData = Article.encode(saveArticle);
-      StorageManager.saveData('savedlists', encodedData);
+      StorageManager.saveData(PKeys.savedlists, encodedData);
       snackBarProject(
           context: globalKey.currentContext!,
           title: 'This news has been Deleted',

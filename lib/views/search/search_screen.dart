@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/search_controller.dart';
 import 'package:newsapp/utilities/constants/colors.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/services/sharedpreference_service.dart';
 import 'package:newsapp/utilities/widgets/search_bar.dart';
 import 'package:newsapp/utilities/widgets/snack_bar.dart';
@@ -9,6 +8,7 @@ import 'package:newsapp/utilities/widgets/top_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import '../../models/home_page_news_model.dart';
+import '../../utilities/constants/keys.dart';
 import '../../utilities/constants/themes.dart';
 import '../../utilities/functions/gap.dart';
 import '../../utilities/functions/navigations.dart';
@@ -200,14 +200,13 @@ class _SearchScreenState extends State<SearchScreen> {
           flex: 0,
           child: InkWell(
             onTap: () {
-              printer(searchcontroller!.searchTextController!.text);
-              if (searchcontroller.searchTextController!.text.isNotEmpty) {
+              if (searchcontroller!.searchTextController!.text.isNotEmpty) {
                 searchcontroller
                     .getSearchData(
                         searchTexts:
                             searchcontroller.searchTextController!.text)
                     .then((value) {
-                  StorageManager.saveData('searchhistory',
+                  StorageManager.saveData(PKeys.searchhistory,
                       searchcontroller.searchTextController!.text);
                   searchcontroller.searchList =
                       searchcontroller.searchDataLists.articles!;

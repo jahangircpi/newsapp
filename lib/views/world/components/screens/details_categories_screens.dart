@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/controllers/world_controller.dart';
 import 'package:newsapp/utilities/functions/callback.dart';
 import 'package:newsapp/utilities/functions/gap.dart';
-import 'package:newsapp/utilities/functions/print.dart';
 import 'package:newsapp/utilities/widgets/loading/three_bounch.dart';
 import 'package:newsapp/views/world/components/category_lists.dart';
 import 'package:newsapp/views/world/components/screens/components/topcategorylistview.dart';
@@ -43,14 +42,19 @@ class _DetailsglobalState extends State<Detailsglobal> {
             return Column(
               children: [
                 gapY(10),
-                TopAppBar(fullcountryname: widget.fullcountryname!),
+                TopAppBar(
+                  fullcountryname: widget.fullcountryname ?? "",
+                ),
                 TopCategoryListView(
-                    country: widget.country, worldcontroller: worldcontroller),
+                  country: widget.country ?? "",
+                  worldcontroller: worldcontroller,
+                ),
                 Expanded(
                   child: containerwhite(
-                      dataStateEnum: worldcontroller.worldDataState,
-                      listName: worldcontroller.worldnewsLists,
-                      listController: scrollercontroller),
+                    dataStateEnum: worldcontroller.worldDataState,
+                    listName: worldcontroller.worldnewsLists,
+                    listController: scrollercontroller,
+                  ),
                 ),
                 worldcontroller.worldDataState == DataState.isMoreDatAvailable
                     ? const Loader(
@@ -76,7 +80,6 @@ class _DetailsglobalState extends State<Detailsglobal> {
     scrollercontroller.addListener(() {
       if (scrollercontroller.position.pixels ==
           scrollercontroller.position.maxScrollExtent) {
-        printer("reached end");
         page++;
         if (page <= 5) {
           context.read<WorldController>().getmoreTask(
@@ -89,5 +92,4 @@ class _DetailsglobalState extends State<Detailsglobal> {
       }
     });
   }
-// All Functionalities of InitState Start here //!
 }
